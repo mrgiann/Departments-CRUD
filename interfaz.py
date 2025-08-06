@@ -98,6 +98,7 @@ def alta_departamento():
     aguas.append(alta_vars["Agua"].get())
     gass.append(alta_vars["Gas"].get())
     messagebox.showinfo("Éxito", "Departamento cargado exitosamente.")
+    frame_alta_dpto.pack_forget()
     mostrar_frame(frame_departamentos)
 tk.Button(frame_alta_dpto, text="Guardar", command=alta_departamento, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
 tk.Button(frame_alta_dpto, text="Volver", command=lambda: [frame_alta_dpto.pack_forget(), mostrar_frame(frame_departamentos)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
@@ -116,6 +117,7 @@ def baja_departamento():
     for i in range(len(torres)):
         if torres[i] == torre and pisos[i] == piso and dptos[i] == ndpto:
             messagebox.showinfo("Info", "No se puede eliminar un departamento.")
+            frame_baja_dpto.pack_forget()
             mostrar_frame(frame_departamentos)
             return
     messagebox.showerror("Error", "El departamento no existe.")
@@ -166,6 +168,7 @@ def modificar_departamento():
         return
     messagebox.showinfo("Éxito", "Modificación realizada.")
     frame_mod_opciones.pack_forget()
+    frame_mod_dpto.pack_forget()
     mostrar_frame(frame_departamentos)
 tk.Button(frame_mod_dpto, text="Buscar", command=buscar_modificar, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
 tk.Button(frame_mod_opciones, text="Modificar", command=modificar_departamento, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
@@ -291,6 +294,7 @@ def alta_propietario():
     sums.append(alta_prop_vars["Sum (s/n)"].get())
     dsums.append(alta_prop_vars["Consumo Sum"].get())
     messagebox.showinfo("Éxito", "Propietario cargado exitosamente.")
+    frame_alta_prop.pack_forget()
     mostrar_frame(frame_propietarios)
 tk.Button(frame_alta_prop, text="Guardar", command=alta_propietario, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
 tk.Button(frame_alta_prop, text="Volver", command=lambda: [frame_alta_prop.pack_forget(), mostrar_frame(frame_propietarios)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
@@ -321,6 +325,7 @@ def baja_propietario():
             sums.pop(i)
             dsums.pop(i)
             messagebox.showinfo("Éxito", "Propietario eliminado.")
+            frame_baja_prop.pack_forget()
             mostrar_frame(frame_propietarios)
             return
     messagebox.showerror("Error", "El propietario no existe.")
@@ -377,6 +382,7 @@ def modificar_propietario():
         return
     messagebox.showinfo("Éxito", "Modificación realizada.")
     frame_mod_opciones_prop.pack_forget()
+    frame_mod_prop.pack_forget()
     mostrar_frame(frame_propietarios)
 tk.Button(frame_mod_prop, text="Buscar", command=buscar_modificar_prop, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
 tk.Button(frame_mod_opciones_prop, text="Modificar", command=modificar_propietario, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
@@ -481,6 +487,7 @@ def alta_cochera():
     mtcubiertossc.append(alta_coch_vars["Metros Cubiertos"].get())
     libres.append(alta_coch_vars["Libre (s/n)"].get())
     messagebox.showinfo("Éxito", "Cochera cargada exitosamente.")
+    frame_alta_coch.pack_forget()
     mostrar_frame(frame_cocheras)
 tk.Button(frame_alta_coch, text="Guardar", command=alta_cochera, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
 tk.Button(frame_alta_coch, text="Volver", command=lambda: [frame_alta_coch.pack_forget(), mostrar_frame(frame_cocheras)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
@@ -523,6 +530,7 @@ def modificar_cochera():
         return
     messagebox.showinfo("Éxito", "Modificación realizada.")
     frame_mod_opciones_coch.pack_forget()
+    frame_mod_coch.pack_forget()
     mostrar_frame(frame_cocheras)
 tk.Button(frame_mod_coch, text="Buscar", command=buscar_modificar_coch, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
 tk.Button(frame_mod_opciones_coch, text="Modificar", command=modificar_cochera, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
