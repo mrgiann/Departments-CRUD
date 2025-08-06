@@ -100,7 +100,7 @@ def alta_departamento():
     messagebox.showinfo("Éxito", "Departamento cargado exitosamente.")
     mostrar_frame(frame_departamentos)
 tk.Button(frame_alta_dpto, text="Guardar", command=alta_departamento, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
-tk.Button(frame_alta_dpto, text="Volver", command=lambda: mostrar_frame(frame_departamentos), bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
+tk.Button(frame_alta_dpto, text="Volver", command=lambda: [frame_alta_dpto.pack_forget(), mostrar_frame(frame_departamentos)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
 
 # ============ BAJA DEPARTAMENTO ===============
 frame_baja_dpto = tk.Frame(root, bg="#1e3d59")
@@ -120,7 +120,7 @@ def baja_departamento():
             return
     messagebox.showerror("Error", "El departamento no existe.")
 tk.Button(frame_baja_dpto, text="Eliminar", command=baja_departamento, bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
-tk.Button(frame_baja_dpto, text="Volver", command=lambda: mostrar_frame(frame_departamentos), bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
+tk.Button(frame_baja_dpto, text="Volver", command=lambda: [frame_baja_dpto.pack_forget(), mostrar_frame(frame_departamentos)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
 
 # ============ MODIFICACION DEPARTAMENTO ===============
 frame_mod_dpto = tk.Frame(root, bg="#1e3d59")
@@ -170,7 +170,7 @@ def modificar_departamento():
 tk.Button(frame_mod_dpto, text="Buscar", command=buscar_modificar, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
 tk.Button(frame_mod_opciones, text="Modificar", command=modificar_departamento, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
 tk.Button(frame_mod_opciones, text="Volver", command=lambda: [frame_mod_opciones.pack_forget(), mostrar_frame(frame_departamentos)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
-tk.Button(frame_mod_dpto, text="Volver", command=lambda: mostrar_frame(frame_departamentos), bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
+tk.Button(frame_mod_dpto, text="Volver", command=lambda: [frame_mod_dpto.pack_forget(), mostrar_frame(frame_departamentos)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
 
 # ============ CONSULTA DEPARTAMENTO ===============
 frame_consulta_dpto = tk.Frame(root, bg="#1e3d59")
@@ -205,7 +205,7 @@ consulta_entry2.pack()
 tk.Label(frame_consulta_dpto, text="Número:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
 consulta_entry3.pack()
 tk.Button(frame_consulta_dpto, text="Consultar", command=consulta_departamento, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
-tk.Button(frame_consulta_dpto, text="Volver", command=lambda: mostrar_frame(frame_departamentos), bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
+tk.Button(frame_consulta_dpto, text="Volver", command=lambda: [frame_consulta_dpto.pack_forget(), mostrar_frame(frame_departamentos)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
 
 # ============ LISTADO DEPARTAMENTO ===============
 frame_listado_dpto = tk.Frame(root, bg="#1e3d59")
@@ -243,7 +243,7 @@ listado_entry2.pack()
 tk.Label(frame_listado_dpto, text="Número:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
 listado_entry3.pack()
 tk.Button(frame_listado_dpto, text="Listar", command=listado_departamento, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
-tk.Button(frame_listado_dpto, text="Volver", command=lambda: mostrar_frame(frame_departamentos), bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
+tk.Button(frame_listado_dpto, text="Volver", command=lambda: [frame_listado_dpto.pack_forget(), mostrar_frame(frame_departamentos)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
 
 # ============ LIQUIDACION ===============
 def liquidacion():
@@ -260,6 +260,349 @@ tk.Button(frame_propietarios, text="Consulta", command=lambda: mostrar_frame(fra
 tk.Button(frame_propietarios, text="Listado", command=lambda: mostrar_frame(frame_listado_prop), bg="#274472", fg="#7ec8e3", font=("Arial", 14), width=20, height=2).pack(pady=5)
 tk.Button(frame_propietarios, text="Volver", command=lambda: mostrar_frame(frame_principal), bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=20)
 
+# ============ ALTA PROPIETARIO ===============
+frame_alta_prop = tk.Frame(root, bg="#1e3d59")
+tk.Label(frame_alta_prop, text="Alta Propietario", font=("Arial", 18), bg="#1e3d59", fg="#7ec8e3").pack(pady=20)
+alta_prop_vars = {campo: tk.StringVar() for campo in [
+    "Torre (A/B/C)", "Piso", "Número", "Nombre y Apellido", "Habitantes", "Fecha Compra", "Fecha Venta", "Cochera (s/n)", "Gym (s/n)", "Sum (s/n)", "Consumo Sum"
+]}
+for campo, var in alta_prop_vars.items():
+    tk.Label(frame_alta_prop, text=campo, bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+    tk.Entry(frame_alta_prop, textvariable=var, font=("Arial", 12)).pack()
+def alta_propietario():
+    torre = alta_prop_vars["Torre (A/B/C)"].get().upper()
+    piso = alta_prop_vars["Piso"].get()
+    ndpto = alta_prop_vars["Número"].get()
+    if torre not in ("A", "B", "C"):
+        messagebox.showerror("Error", "Torre inválida.")
+        return
+    if any(torresp[i] == torre and pisosp[i] == piso and dptosp[i] == ndpto for i in range(len(torresp))):
+        messagebox.showerror("Error", "El propietario ya existe.")
+        return
+    torresp.append(torre)
+    pisosp.append(piso)
+    dptosp.append(ndpto)
+    nombresyapellidos.append(alta_prop_vars["Nombre y Apellido"].get())
+    habitantess.append(alta_prop_vars["Habitantes"].get())
+    fechasc.append(alta_prop_vars["Fecha Compra"].get())
+    fechasv.append(alta_prop_vars["Fecha Venta"].get())
+    cocheras_p.append(alta_prop_vars["Cochera (s/n)"].get())
+    gyms.append(alta_prop_vars["Gym (s/n)"].get())
+    sums.append(alta_prop_vars["Sum (s/n)"].get())
+    dsums.append(alta_prop_vars["Consumo Sum"].get())
+    messagebox.showinfo("Éxito", "Propietario cargado exitosamente.")
+    mostrar_frame(frame_propietarios)
+tk.Button(frame_alta_prop, text="Guardar", command=alta_propietario, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
+tk.Button(frame_alta_prop, text="Volver", command=lambda: [frame_alta_prop.pack_forget(), mostrar_frame(frame_propietarios)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
+
+# ============ BAJA PROPIETARIO ===============
+frame_baja_prop = tk.Frame(root, bg="#1e3d59")
+tk.Label(frame_baja_prop, text="Baja Propietario", font=("Arial", 18), bg="#1e3d59", fg="#7ec8e3").pack(pady=20)
+baja_prop_vars = {campo: tk.StringVar() for campo in ["Torre (A/B/C)", "Piso", "Número"]}
+for campo, var in baja_prop_vars.items():
+    tk.Label(frame_baja_prop, text=campo, bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+    tk.Entry(frame_baja_prop, textvariable=var, font=("Arial", 12)).pack()
+def baja_propietario():
+    torre = baja_prop_vars["Torre (A/B/C)"].get().upper()
+    piso = baja_prop_vars["Piso"].get()
+    ndpto = baja_prop_vars["Número"].get()
+    for i in range(len(torresp)):
+        if torresp[i] == torre and pisosp[i] == piso and dptosp[i] == ndpto:
+            # Eliminar propietario
+            torresp.pop(i)
+            pisosp.pop(i)
+            dptosp.pop(i)
+            nombresyapellidos.pop(i)
+            habitantess.pop(i)
+            fechasc.pop(i)
+            fechasv.pop(i)
+            cocheras_p.pop(i)
+            gyms.pop(i)
+            sums.pop(i)
+            dsums.pop(i)
+            messagebox.showinfo("Éxito", "Propietario eliminado.")
+            mostrar_frame(frame_propietarios)
+            return
+    messagebox.showerror("Error", "El propietario no existe.")
+tk.Button(frame_baja_prop, text="Eliminar", command=baja_propietario, bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
+tk.Button(frame_baja_prop, text="Volver", command=lambda: [frame_baja_prop.pack_forget(), mostrar_frame(frame_propietarios)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
+
+# ============ MODIFICACION PROPIETARIO ===============
+frame_mod_prop = tk.Frame(root, bg="#1e3d59")
+tk.Label(frame_mod_prop, text="Modificar Propietario", font=("Arial", 18), bg="#1e3d59", fg="#7ec8e3").pack(pady=20)
+mod_prop_vars = {campo: tk.StringVar() for campo in ["Torre (A/B/C)", "Piso", "Número"]}
+for campo, var in mod_prop_vars.items():
+    tk.Label(frame_mod_prop, text=campo, bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+    tk.Entry(frame_mod_prop, textvariable=var, font=("Arial", 12)).pack()
+opcion_mod_prop = tk.StringVar()
+nuevo_valor_prop = tk.StringVar()
+def buscar_modificar_prop():
+    torre = mod_prop_vars["Torre (A/B/C)"].get().upper()
+    piso = mod_prop_vars["Piso"].get()
+    ndpto = mod_prop_vars["Número"].get()
+    for i in range(len(torresp)):
+        if torresp[i] == torre and pisosp[i] == piso and dptosp[i] == ndpto:
+            frame_mod_opciones_prop.pack()
+            frame_mod_prop.mod_index = i
+            return
+    messagebox.showerror("Error", "El propietario no existe.")
+frame_mod_opciones_prop = tk.Frame(frame_mod_prop, bg="#1e3d59")
+tk.Label(frame_mod_opciones_prop, text="¿Qué desea modificar?", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+for campo in ["Nombre y Apellido", "Habitantes", "Fecha Compra", "Fecha Venta", "Cochera (s/n)", "Gym (s/n)", "Sum (s/n)", "Consumo Sum"]:
+    tk.Radiobutton(frame_mod_opciones_prop, text=campo, variable=opcion_mod_prop, value=campo, bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack(anchor="w")
+tk.Label(frame_mod_opciones_prop, text="Nuevo valor:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+tk.Entry(frame_mod_opciones_prop, textvariable=nuevo_valor_prop, font=("Arial", 12)).pack()
+def modificar_propietario():
+    i = frame_mod_prop.mod_index
+    campo = opcion_mod_prop.get()
+    valor = nuevo_valor_prop.get()
+    if campo == "Nombre y Apellido":
+        nombresyapellidos[i] = valor
+    elif campo == "Habitantes":
+        habitantess[i] = valor
+    elif campo == "Fecha Compra":
+        fechasc[i] = valor
+    elif campo == "Fecha Venta":
+        fechasv[i] = valor
+    elif campo == "Cochera (s/n)":
+        cocheras_p[i] = valor
+    elif campo == "Gym (s/n)":
+        gyms[i] = valor
+    elif campo == "Sum (s/n)":
+        sums[i] = valor
+    elif campo == "Consumo Sum":
+        dsums[i] = valor
+    else:
+        messagebox.showerror("Error", "Opción inválida.")
+        return
+    messagebox.showinfo("Éxito", "Modificación realizada.")
+    frame_mod_opciones_prop.pack_forget()
+    mostrar_frame(frame_propietarios)
+tk.Button(frame_mod_prop, text="Buscar", command=buscar_modificar_prop, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
+tk.Button(frame_mod_opciones_prop, text="Modificar", command=modificar_propietario, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
+tk.Button(frame_mod_opciones_prop, text="Volver", command=lambda: [frame_mod_opciones_prop.pack_forget(), mostrar_frame(frame_propietarios)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
+tk.Button(frame_mod_prop, text="Volver", command=lambda: [frame_mod_prop.pack_forget(), mostrar_frame(frame_propietarios)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
+
+# ============ CONSULTA PROPIETARIO ===============
+frame_consulta_prop = tk.Frame(root, bg="#1e3d59")
+tk.Label(frame_consulta_prop, text="Consulta Propietario", font=("Arial", 18), bg="#1e3d59", fg="#7ec8e3").pack(pady=20)
+consulta_prop_var = tk.StringVar()
+tk.Label(frame_consulta_prop, text="Filtrar por:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+tk.Radiobutton(frame_consulta_prop, text="Torre", variable=consulta_prop_var, value="torre", bg="#1e3d59", fg="#7ec8e3").pack(anchor="w")
+tk.Radiobutton(frame_consulta_prop, text="Torre y Piso", variable=consulta_prop_var, value="torre_piso", bg="#1e3d59", fg="#7ec8e3").pack(anchor="w")
+tk.Radiobutton(frame_consulta_prop, text="Torre, Piso y Número", variable=consulta_prop_var, value="torre_piso_num", bg="#1e3d59", fg="#7ec8e3").pack(anchor="w")
+consulta_prop_entry1 = tk.Entry(frame_consulta_prop, font=("Arial", 12))
+consulta_prop_entry2 = tk.Entry(frame_consulta_prop, font=("Arial", 12))
+consulta_prop_entry3 = tk.Entry(frame_consulta_prop, font=("Arial", 12))
+def consulta_propietario():
+    filtro = consulta_prop_var.get()
+    torre = consulta_prop_entry1.get().upper()
+    piso = consulta_prop_entry2.get()
+    ndpto = consulta_prop_entry3.get()
+    resultados = []
+    if filtro == "torre":
+        resultados = [f"Torre: {torresp[h]}, Piso: {pisosp[h]}, Departamento: {dptosp[h]}, Nombre: {nombresyapellidos[h]}, Habitantes: {habitantess[h]}, Compra: {fechasc[h]}, Venta: {fechasv[h]}, Cochera: {cocheras_p[h]}, Gym: {gyms[h]}, Sum: {sums[h]}, Consumo Sum: {dsums[h]}" for h in range(len(torresp)) if torresp[h] == torre]
+    elif filtro == "torre_piso":
+        resultados = [f"Torre: {torresp[h]}, Piso: {pisosp[h]}, Departamento: {dptosp[h]}, Nombre: {nombresyapellidos[h]}, Habitantes: {habitantess[h]}, Compra: {fechasc[h]}, Venta: {fechasv[h]}, Cochera: {cocheras_p[h]}, Gym: {gyms[h]}, Sum: {sums[h]}, Consumo Sum: {dsums[h]}" for h in range(len(torresp)) if torresp[h] == torre and pisosp[h] == piso]
+    elif filtro == "torre_piso_num":
+        resultados = [f"Torre: {torresp[h]}, Piso: {pisosp[h]}, Departamento: {dptosp[h]}, Nombre: {nombresyapellidos[h]}, Habitantes: {habitantess[h]}, Compra: {fechasc[h]}, Venta: {fechasv[h]}, Cochera: {cocheras_p[h]}, Gym: {gyms[h]}, Sum: {sums[h]}, Consumo Sum: {dsums[h]}" for h in range(len(torresp)) if torresp[h] == torre and pisosp[h] == piso and dptosp[h] == ndpto]
+    else:
+        resultados = ["Seleccione un filtro."]
+    messagebox.showinfo("Consulta", "\n".join(resultados) if resultados else "Sin resultados.")
+tk.Label(frame_consulta_prop, text="Torre:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+consulta_prop_entry1.pack()
+tk.Label(frame_consulta_prop, text="Piso:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+consulta_prop_entry2.pack()
+tk.Label(frame_consulta_prop, text="Número:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+consulta_prop_entry3.pack()
+tk.Button(frame_consulta_prop, text="Consultar", command=consulta_propietario, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
+tk.Button(frame_consulta_prop, text="Volver", command=lambda: [frame_consulta_prop.pack_forget(), mostrar_frame(frame_propietarios)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
+
+# ============ LISTADO PROPIETARIO ===============
+frame_listado_prop = tk.Frame(root, bg="#1e3d59")
+tk.Label(frame_listado_prop, text="Listado Propietarios", font=("Arial", 18), bg="#1e3d59", fg="#7ec8e3").pack(pady=20)
+listado_prop_var = tk.StringVar()
+tk.Label(frame_listado_prop, text="Filtrar por:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+tk.Radiobutton(frame_listado_prop, text="Torre", variable=listado_prop_var, value="torre", bg="#1e3d59", fg="#7ec8e3").pack(anchor="w")
+tk.Radiobutton(frame_listado_prop, text="Torre y Piso", variable=listado_prop_var, value="torre_piso", bg="#1e3d59", fg="#7ec8e3").pack(anchor="w")
+tk.Radiobutton(frame_listado_prop, text="Torre, Piso y Número", variable=listado_prop_var, value="torre_piso_num", bg="#1e3d59", fg="#7ec8e3").pack(anchor="w")
+listado_prop_entry1 = tk.Entry(frame_listado_prop, font=("Arial", 12))
+listado_prop_entry2 = tk.Entry(frame_listado_prop, font=("Arial", 12))
+listado_prop_entry3 = tk.Entry(frame_listado_prop, font=("Arial", 12))
+def listado_propietario():
+    filtro = listado_prop_var.get()
+    torre = listado_prop_entry1.get().upper()
+    piso = listado_prop_entry2.get()
+    ndpto = listado_prop_entry3.get()
+    resultados = []
+    if filtro == "torre":
+        resultados = [f"Torre: {torresp[h]}, Piso: {pisosp[h]}, Departamento: {dptosp[h]}, Nombre: {nombresyapellidos[h]}, Habitantes: {habitantess[h]}, Compra: {fechasc[h]}, Venta: {fechasv[h]}, Cochera: {cocheras_p[h]}, Gym: {gyms[h]}, Sum: {sums[h]}, Consumo Sum: {dsums[h]}" for h in range(len(torresp)) if torresp[h] == torre]
+    elif filtro == "torre_piso":
+        resultados = [f"Torre: {torresp[h]}, Piso: {pisosp[h]}, Departamento: {dptosp[h]}, Nombre: {nombresyapellidos[h]}, Habitantes: {habitantess[h]}, Compra: {fechasc[h]}, Venta: {fechasv[h]}, Cochera: {cocheras_p[h]}, Gym: {gyms[h]}, Sum: {sums[h]}, Consumo Sum: {dsums[h]}" for h in range(len(torresp)) if torresp[h] == torre and pisosp[h] == piso]
+    elif filtro == "torre_piso_num":
+        resultados = [f"Torre: {torresp[h]}, Piso: {pisosp[h]}, Departamento: {dptosp[h]}, Nombre: {nombresyapellidos[h]}, Habitantes: {habitantess[h]}, Compra: {fechasc[h]}, Venta: {fechasv[h]}, Cochera: {cocheras_p[h]}, Gym: {gyms[h]}, Sum: {sums[h]}, Consumo Sum: {dsums[h]}" for h in range(len(torresp)) if torresp[h] == torre and pisosp[h] == piso and dptosp[h] == ndpto]
+    else:
+        resultados = ["Seleccione un filtro."]
+    with open("listado_prop.txt", "a") as archivo:
+        for r in resultados:
+            archivo.write(r + '\n')
+    messagebox.showinfo("Listado", "\n".join(resultados) if resultados else "Sin resultados.")
+tk.Label(frame_listado_prop, text="Torre:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+listado_prop_entry1.pack()
+tk.Label(frame_listado_prop, text="Piso:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+listado_prop_entry2.pack()
+tk.Label(frame_listado_prop, text="Número:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+listado_prop_entry3.pack()
+tk.Button(frame_listado_prop, text="Listar", command=listado_propietario, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
+tk.Button(frame_listado_prop, text="Volver", command=lambda: [frame_listado_prop.pack_forget(), mostrar_frame(frame_propietarios)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
+
+# ============ ALTA COCHERA ===============
+frame_alta_coch = tk.Frame(root, bg="#1e3d59")
+tk.Label(frame_alta_coch, text="Alta Cochera", font=("Arial", 18), bg="#1e3d59", fg="#7ec8e3").pack(pady=20)
+alta_coch_vars = {campo: tk.StringVar() for campo in [
+    "Torre (A/B/C)", "Piso", "Número", "Metros Cubiertos", "Libre (s/n)"
+]}
+for campo, var in alta_coch_vars.items():
+    tk.Label(frame_alta_coch, text=campo, bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+    tk.Entry(frame_alta_coch, textvariable=var, font=("Arial", 12)).pack()
+def alta_cochera():
+    torre = alta_coch_vars["Torre (A/B/C)"].get().upper()
+    piso = alta_coch_vars["Piso"].get()
+    ndpto = alta_coch_vars["Número"].get()
+    if torre not in ("A", "B", "C"):
+        messagebox.showerror("Error", "Torre inválida.")
+        return
+    if any(torresc[i] == torre and pisosc[i] == piso and dptosc[i] == ndpto for i in range(len(torresc))):
+        messagebox.showerror("Error", "La cochera ya existe.")
+        return
+    torresc.append(torre)
+    pisosc.append(piso)
+    dptosc.append(ndpto)
+    mtcubiertossc.append(alta_coch_vars["Metros Cubiertos"].get())
+    libres.append(alta_coch_vars["Libre (s/n)"].get())
+    messagebox.showinfo("Éxito", "Cochera cargada exitosamente.")
+    mostrar_frame(frame_cocheras)
+tk.Button(frame_alta_coch, text="Guardar", command=alta_cochera, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
+tk.Button(frame_alta_coch, text="Volver", command=lambda: [frame_alta_coch.pack_forget(), mostrar_frame(frame_cocheras)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
+
+# ============ MODIFICACION COCHERA ===============
+frame_mod_coch = tk.Frame(root, bg="#1e3d59")
+tk.Label(frame_mod_coch, text="Modificar Cochera", font=("Arial", 18), bg="#1e3d59", fg="#7ec8e3").pack(pady=20)
+mod_coch_vars = {campo: tk.StringVar() for campo in ["Torre (A/B/C)", "Piso", "Número"]}
+for campo, var in mod_coch_vars.items():
+    tk.Label(frame_mod_coch, text=campo, bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+    tk.Entry(frame_mod_coch, textvariable=var, font=("Arial", 12)).pack()
+opcion_mod_coch = tk.StringVar()
+nuevo_valor_coch = tk.StringVar()
+def buscar_modificar_coch():
+    torre = mod_coch_vars["Torre (A/B/C)"].get().upper()
+    piso = mod_coch_vars["Piso"].get()
+    ndpto = mod_coch_vars["Número"].get()
+    for i in range(len(torresc)):
+        if torresc[i] == torre and pisosc[i] == piso and dptosc[i] == ndpto:
+            frame_mod_opciones_coch.pack()
+            frame_mod_coch.mod_index = i
+            return
+    messagebox.showerror("Error", "La cochera no existe.")
+frame_mod_opciones_coch = tk.Frame(frame_mod_coch, bg="#1e3d59")
+tk.Label(frame_mod_opciones_coch, text="¿Qué desea modificar?", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+for campo in ["Metros Cubiertos", "Libre (s/n)"]:
+    tk.Radiobutton(frame_mod_opciones_coch, text=campo, variable=opcion_mod_coch, value=campo, bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack(anchor="w")
+tk.Label(frame_mod_opciones_coch, text="Nuevo valor:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+tk.Entry(frame_mod_opciones_coch, textvariable=nuevo_valor_coch, font=("Arial", 12)).pack()
+def modificar_cochera():
+    i = frame_mod_coch.mod_index
+    campo = opcion_mod_coch.get()
+    valor = nuevo_valor_coch.get()
+    if campo == "Metros Cubiertos":
+        mtcubiertossc[i] = valor
+    elif campo == "Libre (s/n)":
+        libres[i] = valor
+    else:
+        messagebox.showerror("Error", "Opción inválida.")
+        return
+    messagebox.showinfo("Éxito", "Modificación realizada.")
+    frame_mod_opciones_coch.pack_forget()
+    mostrar_frame(frame_cocheras)
+tk.Button(frame_mod_coch, text="Buscar", command=buscar_modificar_coch, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
+tk.Button(frame_mod_opciones_coch, text="Modificar", command=modificar_cochera, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
+tk.Button(frame_mod_opciones_coch, text="Volver", command=lambda: [frame_mod_opciones_coch.pack_forget(), mostrar_frame(frame_cocheras)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
+tk.Button(frame_mod_coch, text="Volver", command=lambda: [frame_mod_coch.pack_forget(), mostrar_frame(frame_cocheras)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
+
+# ============ CONSULTA COCHERA ===============
+frame_consulta_coch = tk.Frame(root, bg="#1e3d59")
+tk.Label(frame_consulta_coch, text="Consulta Cochera", font=("Arial", 18), bg="#1e3d59", fg="#7ec8e3").pack(pady=20)
+consulta_coch_var = tk.StringVar()
+tk.Label(frame_consulta_coch, text="Filtrar por:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+tk.Radiobutton(frame_consulta_coch, text="Torre", variable=consulta_coch_var, value="torre", bg="#1e3d59", fg="#7ec8e3").pack(anchor="w")
+tk.Radiobutton(frame_consulta_coch, text="Torre y Piso", variable=consulta_coch_var, value="torre_piso", bg="#1e3d59", fg="#7ec8e3").pack(anchor="w")
+tk.Radiobutton(frame_consulta_coch, text="Torre, Piso y Número", variable=consulta_coch_var, value="torre_piso_num", bg="#1e3d59", fg="#7ec8e3").pack(anchor="w")
+consulta_coch_entry1 = tk.Entry(frame_consulta_coch, font=("Arial", 12))
+consulta_coch_entry2 = tk.Entry(frame_consulta_coch, font=("Arial", 12))
+consulta_coch_entry3 = tk.Entry(frame_consulta_coch, font=("Arial", 12))
+def consulta_cochera():
+    filtro = consulta_coch_var.get()
+    torre = consulta_coch_entry1.get().upper()
+    piso = consulta_coch_entry2.get()
+    ndpto = consulta_coch_entry3.get()
+    resultados = []
+    if filtro == "torre":
+        resultados = [f"Torre: {torresc[h]}, Piso: {pisosc[h]}, Cochera: {dptosc[h]}, Metros cubiertos: {mtcubiertossc[h]}, Libre: {libres[h]}" for h in range(len(torresc)) if torresc[h] == torre]
+    elif filtro == "torre_piso":
+        resultados = [f"Torre: {torresc[h]}, Piso: {pisosc[h]}, Cochera: {dptosc[h]}, Metros cubiertos: {mtcubiertoss[h]}, Libre: {libres[h]}" for h in range(len(torresc)) if torresc[h] == torre and pisosc[h] == piso]
+    elif filtro == "torre_piso_num":
+        resultados = [f"Torre: {torresc[h]}, Piso: {pisosc[h]}, Cochera: {dptosc[h]}, Metros cubiertos: {mtcubiertoss[h]}, Libre: {libres[h]}" for h in range(len(torresc)) if torresc[h] == torre and pisosc[h] == piso and dptosc[h] == ndpto]
+    else:
+        resultados = ["Seleccione un filtro."]
+    messagebox.showinfo("Consulta", "\n".join(resultados) if resultados else "Sin resultados.")
+tk.Label(frame_consulta_coch, text="Torre:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+consulta_coch_entry1.pack()
+tk.Label(frame_consulta_coch, text="Piso:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+consulta_coch_entry2.pack()
+tk.Label(frame_consulta_coch, text="Número:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+consulta_coch_entry3.pack()
+tk.Button(frame_consulta_coch, text="Consultar", command=consulta_cochera, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
+tk.Button(frame_consulta_coch, text="Volver", command=lambda: [frame_consulta_coch.pack_forget(), mostrar_frame(frame_cocheras)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
+
+# ============ LISTADO COCHERA ===============
+frame_listado_coch = tk.Frame(root, bg="#1e3d59")
+tk.Label(frame_listado_coch, text="Listado Cocheras", font=("Arial", 18), bg="#1e3d59", fg="#7ec8e3").pack(pady=20)
+listado_coch_var = tk.StringVar()
+tk.Label(frame_listado_coch, text="Filtrar por:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+tk.Radiobutton(frame_listado_coch, text="Torre", variable=listado_coch_var, value="torre", bg="#1e3d59", fg="#7ec8e3").pack(anchor="w")
+tk.Radiobutton(frame_listado_coch, text="Torre y Piso", variable=listado_coch_var, value="torre_piso", bg="#1e3d59", fg="#7ec8e3").pack(anchor="w")
+tk.Radiobutton(frame_listado_coch, text="Torre, Piso y Número", variable=listado_coch_var, value="torre_piso_num", bg="#1e3d59", fg="#7ec8e3").pack(anchor="w")
+listado_coch_entry1 = tk.Entry(frame_listado_coch, font=("Arial", 12))
+listado_coch_entry2 = tk.Entry(frame_listado_coch, font=("Arial", 12))
+listado_coch_entry3 = tk.Entry(frame_listado_coch, font=("Arial", 12))
+def listado_cochera():
+    filtro = listado_coch_var.get()
+    torre = listado_coch_entry1.get().upper()
+    piso = listado_coch_entry2.get()
+    ndpto = listado_coch_entry3.get()
+    resultados = []
+    if filtro == "torre":
+        resultados = [f"Torre: {torresc[h]}, Piso: {pisosc[h]}, Cochera: {dptosc[h]}, Metros cubiertos: {mtcubiertossc[h]}, Libre: {libres[h]}" for h in range(len(torresc)) if torresc[h] == torre]
+    elif filtro == "torre_piso":
+        resultados = [f"Torre: {torresc[h]}, Piso: {pisosc[h]}, Cochera: {dptosc[h]}, Metros cubiertos: {mtcubiertossc[h]}, Libre: {libres[h]}" for h in range(len(torresc)) if torresc[h] == torre and pisosc[h] == piso]
+    elif filtro == "torre_piso_num":
+        resultados = [f"Torre: {torresc[h]}, Piso: {pisosc[h]}, Cochera: {dptosc[h]}, Metros cubiertos: {mtcubiertossc[h]}, Libre: {libres[h]}" for h in range(len(torresc)) if torresc[h] == torre and pisosc[h] == piso and dptosc[h] == ndpto]
+    else:
+        resultados = ["Seleccione un filtro."]
+    with open("listado_coch.txt", "a") as archivo:
+        for r in resultados:
+            archivo.write(r + '\n')
+    messagebox.showinfo("Listado", "\n".join(resultados) if resultados else "Sin resultados.")
+tk.Label(frame_listado_coch, text="Torre:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+listado_coch_entry1.pack()
+tk.Label(frame_listado_coch, text="Piso:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+listado_coch_entry2.pack()
+tk.Label(frame_listado_coch, text="Número:", bg="#1e3d59", fg="#7ec8e3", font=("Arial", 12)).pack()
+listado_coch_entry3.pack()
+tk.Button(frame_listado_coch, text="Listar", command=listado_cochera, bg="#274472", fg="#7ec8e3", font=("Arial", 12)).pack(pady=10)
+tk.Button(frame_listado_coch, text="Volver", command=lambda: [frame_listado_coch.pack_forget(), mostrar_frame(frame_cocheras)], bg="#c94c4c", fg="white", font=("Arial", 12)).pack(pady=10)
+
+# ============ FRAMES COCHERAS (MENÚ) ===============
 frame_cocheras = tk.Frame(root, bg="#1e3d59")
 tk.Label(frame_cocheras, text="Menú Cocheras", font=("Arial", 18), bg="#1e3d59", fg="#7ec8e3").pack(pady=30)
 tk.Button(frame_cocheras, text="Alta", command=lambda: mostrar_frame(frame_alta_coch), bg="#274472", fg="#7ec8e3", font=("Arial", 14), width=20, height=2).pack(pady=5)
