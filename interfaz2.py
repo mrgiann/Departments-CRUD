@@ -171,7 +171,6 @@ def alta_departamento():
     for widget in frame_alta_departamentos.winfo_children():
         widget.destroy()
 
-    # Alta departamentos
     alta_torre = tk.StringVar()
     alta_piso = tk.StringVar()
     alta_numero = tk.StringVar()
@@ -182,37 +181,59 @@ def alta_departamento():
     alta_gas = tk.StringVar()
 
     crear_titulo(frame_alta_departamentos, "Alta Departamento")
-    tk.Label(frame_alta_departamentos, text="Torre (A/B/C)", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    torre_frame = tk.Frame(frame_alta_departamentos, bg=grisfondo)
-    rb_torre_a = tk.Radiobutton(torre_frame, text="A", variable=alta_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_b = tk.Radiobutton(torre_frame, text="B", variable=alta_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_c = tk.Radiobutton(torre_frame, text="C", variable=alta_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    torre_frame.pack(pady=2)
-    rb_torre_a.pack(side=tk.LEFT, padx=10)
-    rb_torre_b.pack(side=tk.LEFT, padx=10)
-    rb_torre_c.pack(side=tk.LEFT, padx=10)
 
-    tk.Label(frame_alta_departamentos, text="Piso", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    entry_piso = tk.Entry(frame_alta_departamentos, textvariable=alta_piso, font=("Arial", 12))
-    entry_piso.pack(pady=2)
-    tk.Label(frame_alta_departamentos, text="Número", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    entry_numero = tk.Entry(frame_alta_departamentos, textvariable=alta_numero, font=("Arial", 12))
-    entry_numero.pack(pady=2)
-    tk.Label(frame_alta_departamentos, text="Habitaciones", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    entry_habitaciones = tk.Entry(frame_alta_departamentos, textvariable=alta_habitaciones, font=("Arial", 12))
-    entry_habitaciones.pack(pady=2)
-    tk.Label(frame_alta_departamentos, text="Metros Cubiertos", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    entry_metros = tk.Entry(frame_alta_departamentos, textvariable=alta_metros, font=("Arial", 12))
-    entry_metros.pack(pady=2)
-    tk.Label(frame_alta_departamentos, text="Luz", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    entry_luz = tk.Entry(frame_alta_departamentos, textvariable=alta_luz, font=("Arial", 12))
-    entry_luz.pack(pady=2)
-    tk.Label(frame_alta_departamentos, text="Agua", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    entry_agua = tk.Entry(frame_alta_departamentos, textvariable=alta_agua, font=("Arial", 12))
-    entry_agua.pack(pady=2)
-    tk.Label(frame_alta_departamentos, text="Gas", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    entry_gas = tk.Entry(frame_alta_departamentos, textvariable=alta_gas, font=("Arial", 12))
-    entry_gas.pack(pady=2)
+    # Torre
+    fila_torre = tk.Frame(frame_alta_departamentos, bg=grisfondo)
+    tk.Label(fila_torre, text="Torre (A/B/C):", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    rb_torre_a = tk.Radiobutton(fila_torre, text="A", variable=alta_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
+    rb_torre_b = tk.Radiobutton(fila_torre, text="B", variable=alta_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
+    rb_torre_c = tk.Radiobutton(fila_torre, text="C", variable=alta_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
+    rb_torre_a.pack(side=tk.LEFT, padx=5)
+    rb_torre_b.pack(side=tk.LEFT, padx=5)
+    rb_torre_c.pack(side=tk.LEFT, padx=5)
+    fila_torre.pack(pady=2, anchor="w")
+
+    # Piso
+    fila_piso = tk.Frame(frame_alta_departamentos, bg=grisfondo)
+    tk.Label(fila_piso, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_piso, textvariable=alta_piso, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_piso.pack(pady=2, anchor="w")
+
+    # Número
+    fila_numero = tk.Frame(frame_alta_departamentos, bg=grisfondo)
+    tk.Label(fila_numero, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_numero, textvariable=alta_numero, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_numero.pack(pady=2, anchor="w")
+
+    # Habitaciones
+    fila_habitaciones = tk.Frame(frame_alta_departamentos, bg=grisfondo)
+    tk.Label(fila_habitaciones, text="Habitaciones:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_habitaciones, textvariable=alta_habitaciones, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_habitaciones.pack(pady=2, anchor="w")
+
+    # Metros Cubiertos
+    fila_metros = tk.Frame(frame_alta_departamentos, bg=grisfondo)
+    tk.Label(fila_metros, text="Metros Cubiertos:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_metros, textvariable=alta_metros, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_metros.pack(pady=2, anchor="w")
+
+    # Luz
+    fila_luz = tk.Frame(frame_alta_departamentos, bg=grisfondo)
+    tk.Label(fila_luz, text="Luz:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_luz, textvariable=alta_luz, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_luz.pack(pady=2, anchor="w")
+
+    # Agua
+    fila_agua = tk.Frame(frame_alta_departamentos, bg=grisfondo)
+    tk.Label(fila_agua, text="Agua:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_agua, textvariable=alta_agua, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_agua.pack(pady=2, anchor="w")
+
+    # Gas
+    fila_gas = tk.Frame(frame_alta_departamentos, bg=grisfondo)
+    tk.Label(fila_gas, text="Gas:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_gas, textvariable=alta_gas, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_gas.pack(pady=2, anchor="w")
 
     def guardar_departamento():
         t = alta_torre.get().upper()
@@ -272,22 +293,26 @@ def baja_departamento():
     baja_numero = tk.StringVar()
 
     crear_titulo(frame_baja_departamentos, "Baja Departamento")
-    tk.Label(frame_baja_departamentos, text="Torre (A/B/C)", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    torre_frame = tk.Frame(frame_baja_departamentos, bg=grisfondo)
-    rb_torre_a = tk.Radiobutton(torre_frame, text="A", variable=baja_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_b = tk.Radiobutton(torre_frame, text="B", variable=baja_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_c = tk.Radiobutton(torre_frame, text="C", variable=baja_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    torre_frame.pack(pady=2)
-    rb_torre_a.pack(side=tk.LEFT, padx=10)
-    rb_torre_b.pack(side=tk.LEFT, padx=10)
-    rb_torre_c.pack(side=tk.LEFT, padx=10)
 
-    tk.Label(frame_baja_departamentos, text="Piso", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    entry_piso = tk.Entry(frame_baja_departamentos, textvariable=baja_piso, font=("Arial", 12))
-    entry_piso.pack(pady=2)
-    tk.Label(frame_baja_departamentos, text="Número", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    entry_numero = tk.Entry(frame_baja_departamentos, textvariable=baja_numero, font=("Arial", 12))
-    entry_numero.pack(pady=2)
+    fila_torre = tk.Frame(frame_baja_departamentos, bg=grisfondo)
+    tk.Label(fila_torre, text="Torre (A/B/C):", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    rb_torre_a = tk.Radiobutton(fila_torre, text="A", variable=baja_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
+    rb_torre_b = tk.Radiobutton(fila_torre, text="B", variable=baja_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
+    rb_torre_c = tk.Radiobutton(fila_torre, text="C", variable=baja_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
+    rb_torre_a.pack(side=tk.LEFT, padx=5)
+    rb_torre_b.pack(side=tk.LEFT, padx=5)
+    rb_torre_c.pack(side=tk.LEFT, padx=5)
+    fila_torre.pack(pady=2, anchor="w")
+
+    fila_piso = tk.Frame(frame_baja_departamentos, bg=grisfondo)
+    tk.Label(fila_piso, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_piso, textvariable=baja_piso, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_piso.pack(pady=2, anchor="w")
+
+    fila_numero = tk.Frame(frame_baja_departamentos, bg=grisfondo)
+    tk.Label(fila_numero, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_numero, textvariable=baja_numero, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_numero.pack(pady=2, anchor="w")
 
     def eliminar_departamento():
         torre = baja_torre.get().upper()
@@ -326,22 +351,23 @@ def modificacion_departamento():
     mod_index = [None]
 
     crear_titulo(frame_modificacion_departamentos, "Modificacion Departamento")
-    tk.Label(frame_modificacion_departamentos, text="Torre (A/B/C)", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    torre_frame = tk.Frame(frame_modificacion_departamentos, bg=grisfondo)
-    rb_torre_a = tk.Radiobutton(torre_frame, text="A", variable=mod_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_b = tk.Radiobutton(torre_frame, text="B", variable=mod_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_c = tk.Radiobutton(torre_frame, text="C", variable=mod_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    torre_frame.pack(pady=2)
-    rb_torre_a.pack(side=tk.LEFT, padx=10)
-    rb_torre_b.pack(side=tk.LEFT, padx=10)
-    rb_torre_c.pack(side=tk.LEFT, padx=10)
 
-    tk.Label(frame_modificacion_departamentos, text="Piso", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    entry_piso = tk.Entry(frame_modificacion_departamentos, textvariable=mod_piso, font=("Arial", 12))
-    entry_piso.pack(pady=2)
-    tk.Label(frame_modificacion_departamentos, text="Número", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    entry_numero = tk.Entry(frame_modificacion_departamentos, textvariable=mod_numero, font=("Arial", 12))
-    entry_numero.pack(pady=2)
+    fila_torre = tk.Frame(frame_modificacion_departamentos, bg=grisfondo)
+    tk.Label(fila_torre, text="Torre (A/B/C):", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Radiobutton(fila_torre, text="A", variable=mod_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_torre, text="B", variable=mod_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_torre, text="C", variable=mod_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    fila_torre.pack(pady=2, anchor="w")
+
+    fila_piso = tk.Frame(frame_modificacion_departamentos, bg=grisfondo)
+    tk.Label(fila_piso, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_piso, textvariable=mod_piso, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_piso.pack(pady=2, anchor="w")
+
+    fila_numero = tk.Frame(frame_modificacion_departamentos, bg=grisfondo)
+    tk.Label(fila_numero, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_numero, textvariable=mod_numero, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_numero.pack(pady=2, anchor="w")
 
     def buscar_modificar():
         torre = mod_torre.get().upper()
@@ -354,15 +380,18 @@ def modificacion_departamento():
                 return
         messagebox.showerror("Error", "El departamento no existe.")
 
-    btn_buscar = tk.Button(frame_modificacion_departamentos, text="Buscar", command=buscar_modificar, bg=griscuadros, fg=colortexto, font=("Arial", 12))
-    btn_buscar.pack(pady=10)
+    tk.Button(frame_modificacion_departamentos, text="Buscar", command=buscar_modificar, bg=griscuadros, fg=colortexto, font=("Arial", 12)).pack(pady=10)
 
     frame_mod_opciones = tk.Frame(frame_modificacion_departamentos, bg=grisfondo)
-    tk.Label(frame_mod_opciones, text="¿Qué desea modificar?", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
+    fila_opciones = tk.Frame(frame_mod_opciones, bg=grisfondo)
+    tk.Label(fila_opciones, text="¿Qué desea modificar?", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
     for campo in ["Habitaciones", "Metros Cubiertos", "Luz", "Agua", "Gas"]:
-        tk.Radiobutton(frame_mod_opciones, text=campo, variable=opcion_mod, value=campo, bg=grisfondo, fg=colorvolver, font=("Arial", 12)).pack(anchor="w")
-    tk.Label(frame_mod_opciones, text="Nuevo valor:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    tk.Entry(frame_mod_opciones, textvariable=nuevo_valor, font=("Arial", 12)).pack()
+        tk.Radiobutton(fila_opciones, text=campo, variable=opcion_mod, value=campo, bg=grisfondo, fg=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    fila_opciones.pack(pady=2, anchor="w")
+    fila_nuevo = tk.Frame(frame_mod_opciones, bg=grisfondo)
+    tk.Label(fila_nuevo, text="Nuevo valor:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Entry(fila_nuevo, textvariable=nuevo_valor, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_nuevo.pack(pady=2, anchor="w")
 
     def modificar_departamento():
         i = mod_index[0]
@@ -389,12 +418,9 @@ def modificacion_departamento():
         frame_modificacion_departamentos.pack_forget()
         mostrar_frame(frame_departamentos)
 
-    btn_modificar = tk.Button(frame_mod_opciones, text="Modificar", command=modificar_departamento, bg=griscuadros, fg=colortexto, font=("Arial", 12))
-    btn_modificar.pack(pady=10)
-    btn_volver_opciones = tk.Button(frame_mod_opciones, text="Volver", command=lambda: frame_mod_opciones.pack_forget(), bg=colorvolver, fg="white", font=("Arial", 12))
-    btn_volver_opciones.pack(pady=10)
-    btn_volver = tk.Button(frame_modificacion_departamentos, text="Volver", command=lambda: mostrar_frame(frame_departamentos), bg=colorvolver, fg="white", font=("Arial", 12))
-    btn_volver.pack(pady=10)
+    tk.Button(frame_mod_opciones, text="Modificar", command=modificar_departamento, bg=griscuadros, fg=colortexto, font=("Arial", 12)).pack(pady=10)
+    tk.Button(frame_mod_opciones, text="Volver", command=lambda: frame_mod_opciones.pack_forget(), bg=colorvolver, fg="white", font=("Arial", 12)).pack(pady=10)
+    tk.Button(frame_modificacion_departamentos, text="Volver", command=lambda: mostrar_frame(frame_departamentos), bg=colorvolver, fg="white", font=("Arial", 12)).pack(pady=10)
 
 def consulta_departamento():
     for widget in frame_consulta_departamentos.winfo_children():
@@ -402,33 +428,40 @@ def consulta_departamento():
 
     consulta_var = tk.StringVar()
     consulta_torre = tk.StringVar()
-    consulta_entry2 = tk.Entry(frame_consulta_departamentos, font=("Arial", 12))
-    consulta_entry3 = tk.Entry(frame_consulta_departamentos, font=("Arial", 12))
+    consulta_piso = tk.StringVar()
+    consulta_numero = tk.StringVar()
 
     crear_titulo(frame_consulta_departamentos, "Consulta Departamento")
-    tk.Label(frame_consulta_departamentos, text="Filtrar por:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    tk.Radiobutton(frame_consulta_departamentos, text="Torre", variable=consulta_var, value="torre", bg=grisfondo, fg=colortexto).pack(anchor="w")
-    tk.Radiobutton(frame_consulta_departamentos, text="Torre y Piso", variable=consulta_var, value="torre_piso", bg=grisfondo, fg=colortexto).pack(anchor="w")
-    tk.Radiobutton(frame_consulta_departamentos, text="Torre, Piso y Número", variable=consulta_var, value="torre_piso_num", bg=grisfondo, fg=colortexto).pack(anchor="w")
-    tk.Label(frame_consulta_departamentos, text="Torre:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    torre_frame = tk.Frame(frame_consulta_departamentos, bg=grisfondo)
-    rb_torre_a = tk.Radiobutton(torre_frame, text="A", variable=consulta_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_b = tk.Radiobutton(torre_frame, text="B", variable=consulta_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_c = tk.Radiobutton(torre_frame, text="C", variable=consulta_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    torre_frame.pack(pady=2)
-    rb_torre_a.pack(side=tk.LEFT, padx=10)
-    rb_torre_b.pack(side=tk.LEFT, padx=10)
-    rb_torre_c.pack(side=tk.LEFT, padx=10)
-    tk.Label(frame_consulta_departamentos, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    consulta_entry2.pack()
-    tk.Label(frame_consulta_departamentos, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    consulta_entry3.pack()
+
+    fila_filtro = tk.Frame(frame_consulta_departamentos, bg=grisfondo)
+    tk.Label(fila_filtro, text="Filtrar por:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Radiobutton(fila_filtro, text="Torre", variable=consulta_var, value="torre", bg=grisfondo, fg=colortexto).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_filtro, text="Torre y Piso", variable=consulta_var, value="torre_piso", bg=grisfondo, fg=colortexto).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_filtro, text="Torre, Piso y Número", variable=consulta_var, value="torre_piso_num", bg=grisfondo, fg=colortexto).pack(side=tk.LEFT, padx=5)
+    fila_filtro.pack(pady=2, anchor="w")
+
+    fila_torre = tk.Frame(frame_consulta_departamentos, bg=grisfondo)
+    tk.Label(fila_torre, text="Torre:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Radiobutton(fila_torre, text="A", variable=consulta_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_torre, text="B", variable=consulta_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_torre, text="C", variable=consulta_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    fila_torre.pack(pady=2, anchor="w")
+
+    fila_piso = tk.Frame(frame_consulta_departamentos, bg=grisfondo)
+    tk.Label(fila_piso, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Entry(fila_piso, textvariable=consulta_piso, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_piso.pack(pady=2, anchor="w")
+
+    fila_numero = tk.Frame(frame_consulta_departamentos, bg=grisfondo)
+    tk.Label(fila_numero, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Entry(fila_numero, textvariable=consulta_numero, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_numero.pack(pady=2, anchor="w")
 
     def consultar():
         filtro = consulta_var.get()
         torre = consulta_torre.get().upper()
-        piso = consulta_entry2.get()
-        ndpto = consulta_entry3.get()
+        piso = consulta_piso.get()
+        ndpto = consulta_numero.get()
         resultados = []
         if filtro == "torre":
             resultados = [f"Torre: {torres[h]}, Piso: {pisos[h]}, Departamento: {dptos[h]}, Habitaciones: {habitacioness[h]}, Metros cubiertos: {mtcubiertoss[h]}, Luz: {luzz[h]}, Agua: {aguas[h]}, Gas: {gass[h]}" for h in range(len(torres)) if torres[h] == torre]
@@ -440,10 +473,8 @@ def consulta_departamento():
             resultados = ["Seleccione un filtro."]
         messagebox.showinfo("Consulta", "\n".join(resultados) if resultados else "Sin resultados.")
 
-    btn_consultar = tk.Button(frame_consulta_departamentos, text="Consultar", command=consultar, bg=griscuadros, fg=colortexto, font=("Arial", 12))
-    btn_consultar.pack(pady=10)
-    btn_volver = tk.Button(frame_consulta_departamentos, text="Volver", command=lambda: mostrar_frame(frame_departamentos), bg=colorvolver, fg="white", font=("Arial", 12))
-    btn_volver.pack(pady=10)
+    tk.Button(frame_consulta_departamentos, text="Consultar", command=consultar, bg=griscuadros, fg=colortexto, font=("Arial", 12)).pack(pady=10)
+    tk.Button(frame_consulta_departamentos, text="Volver", command=lambda: mostrar_frame(frame_departamentos), bg=colorvolver, fg="white", font=("Arial", 12)).pack(pady=10)
 
 def listado_departamento():
     for widget in frame_listado_departamentos.winfo_children():
@@ -451,33 +482,44 @@ def listado_departamento():
 
     listado_var = tk.StringVar()
     listado_torre = tk.StringVar()
-    listado_entry2 = tk.Entry(frame_listado_departamentos, font=("Arial", 12))
-    listado_entry3 = tk.Entry(frame_listado_departamentos, font=("Arial", 12))
+    listado_piso = tk.StringVar()
+    listado_numero = tk.StringVar()
 
     crear_titulo(frame_listado_departamentos, "Listado Departamento")
-    tk.Label(frame_listado_departamentos, text="Filtrar por:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    tk.Radiobutton(frame_listado_departamentos, text="Torre", variable=listado_var, value="torre", bg=grisfondo, fg=colortexto).pack(anchor="w")
-    tk.Radiobutton(frame_listado_departamentos, text="Torre y Piso", variable=listado_var, value="torre_piso", bg=grisfondo, fg=colortexto).pack(anchor="w")
-    tk.Radiobutton(frame_listado_departamentos, text="Torre, Piso y Número", variable=listado_var, value="torre_piso_num", bg=grisfondo, fg=colortexto).pack(anchor="w")
-    tk.Label(frame_listado_departamentos, text="Torre:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    torre_frame = tk.Frame(frame_listado_departamentos, bg=grisfondo)
-    rb_torre_a = tk.Radiobutton(torre_frame, text="A", variable=listado_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_b = tk.Radiobutton(torre_frame, text="B", variable=listado_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_c = tk.Radiobutton(torre_frame, text="C", variable=listado_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    torre_frame.pack(pady=2)
-    rb_torre_a.pack(side=tk.LEFT, padx=10)
-    rb_torre_b.pack(side=tk.LEFT, padx=10)
-    rb_torre_c.pack(side=tk.LEFT, padx=10)
-    tk.Label(frame_listado_departamentos, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    listado_entry2.pack()
-    tk.Label(frame_listado_departamentos, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    listado_entry3.pack()
+
+    fila_filtro = tk.Frame(frame_listado_departamentos, bg=grisfondo)
+    tk.Label(fila_filtro, text="Filtrar por:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Radiobutton(fila_filtro, text="Torre", variable=listado_var, value="torre", bg=grisfondo, fg=colortexto).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_filtro, text="Torre y Piso", variable=listado_var, value="torre_piso", bg=grisfondo, fg=colortexto).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_filtro, text="Torre, Piso y Número", variable=listado_var, value="torre_piso_num", bg=grisfondo, fg=colortexto).pack(side=tk.LEFT, padx=5)
+    fila_filtro.pack(pady=2, anchor="w")
+
+    fila_torre = tk.Frame(frame_listado_departamentos, bg=grisfondo)
+    tk.Label(fila_torre, text="Torre:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    rb_torre_a = tk.Radiobutton(fila_torre, text="A", variable=listado_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
+    rb_torre_b = tk.Radiobutton(fila_torre, text="B", variable=listado_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
+    rb_torre_c = tk.Radiobutton(fila_torre, text="C", variable=listado_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
+    rb_torre_a.pack(side=tk.LEFT, padx=5)
+    rb_torre_b.pack(side=tk.LEFT, padx=5)
+    rb_torre_c.pack(side=tk.LEFT, padx=5)
+    rb_torre_a.select()
+    fila_torre.pack(pady=2, anchor="w")
+
+    fila_piso = tk.Frame(frame_listado_departamentos, bg=grisfondo)
+    tk.Label(fila_piso, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Entry(fila_piso, textvariable=listado_piso, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_piso.pack(pady=2, anchor="w")
+
+    fila_numero = tk.Frame(frame_listado_departamentos, bg=grisfondo)
+    tk.Label(fila_numero, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Entry(fila_numero, textvariable=listado_numero, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_numero.pack(pady=2, anchor="w")
 
     def listar():
         filtro = listado_var.get()
         torre = listado_torre.get().upper()
-        piso = listado_entry2.get()
-        ndpto = listado_entry3.get()
+        piso = listado_piso.get()
+        ndpto = listado_numero.get()
         resultados = []
         if filtro == "torre":
             resultados = [f"Torre: {torres[h]}, Piso: {pisos[h]}, Departamento: {dptos[h]}, Habitaciones: {habitacioness[h]}, Metros cubiertos: {mtcubiertoss[h]}, Luz: {luzz[h]}, Agua: {aguas[h]}, Gas: {gass[h]}" for h in range(len(torres)) if torres[h] == torre]
@@ -492,11 +534,9 @@ def listado_departamento():
                 archivo.write(r + '\n')
         messagebox.showinfo("Listado", "\n".join(resultados) if resultados else "Sin resultados.")
 
-    btn_listar = tk.Button(frame_listado_departamentos, text="Listar", command=listar, bg=griscuadros, fg=colortexto, font=("Arial", 12))
-    btn_listar.pack(pady=10)
-    btn_volver = tk.Button(frame_listado_departamentos, text="Volver", command=lambda: mostrar_frame(frame_departamentos), bg=colorvolver, fg="white", font=("Arial", 12))
-    btn_volver.pack(pady=10)
-    
+    tk.Button(frame_listado_departamentos, text="Listar", command=listar, bg=griscuadros, fg=colortexto, font=("Arial", 12)).pack(pady=10)
+    tk.Button(frame_listado_departamentos, text="Volver", command=lambda: mostrar_frame(frame_departamentos), bg=colorvolver, fg="white", font=("Arial", 12)).pack(pady=10)
+
 def alta_propietario():
     for widget in frame_alta_propietarios.winfo_children():
         widget.destroy()
@@ -514,36 +554,77 @@ def alta_propietario():
     alta_consumosum = tk.StringVar()
 
     crear_titulo(frame_alta_propietarios, "Alta Propietario")
-    tk.Label(frame_alta_propietarios, text="Torre (A/B/C)", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    torre_frame = tk.Frame(frame_alta_propietarios, bg=grisfondo)
-    rb_torre_a = tk.Radiobutton(torre_frame, text="A", variable=alta_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_b = tk.Radiobutton(torre_frame, text="B", variable=alta_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_c = tk.Radiobutton(torre_frame, text="C", variable=alta_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    torre_frame.pack(pady=2)
-    rb_torre_a.pack(side=tk.LEFT, padx=10)
-    rb_torre_b.pack(side=tk.LEFT, padx=10)
-    rb_torre_c.pack(side=tk.LEFT, padx=10)
 
-    tk.Label(frame_alta_propietarios, text="Piso", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_alta_propietarios, textvariable=alta_piso, font=("Arial", 12)).pack(pady=2)
-    tk.Label(frame_alta_propietarios, text="Número", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_alta_propietarios, textvariable=alta_numero, font=("Arial", 12)).pack(pady=2)
-    tk.Label(frame_alta_propietarios, text="Nombre y Apellido", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_alta_propietarios, textvariable=alta_nombre, font=("Arial", 12)).pack(pady=2)
-    tk.Label(frame_alta_propietarios, text="Habitantes", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_alta_propietarios, textvariable=alta_habitantes, font=("Arial", 12)).pack(pady=2)
-    tk.Label(frame_alta_propietarios, text="Fecha Compra", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_alta_propietarios, textvariable=alta_fechac, font=("Arial", 12)).pack(pady=2)
-    tk.Label(frame_alta_propietarios, text="Fecha Venta", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_alta_propietarios, textvariable=alta_fechav, font=("Arial", 12)).pack(pady=2)
-    tk.Label(frame_alta_propietarios, text="Cochera (s/n)", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_alta_propietarios, textvariable=alta_cochera, font=("Arial", 12)).pack(pady=2)
-    tk.Label(frame_alta_propietarios, text="Gym (s/n)", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_alta_propietarios, textvariable=alta_gym, font=("Arial", 12)).pack(pady=2)
-    tk.Label(frame_alta_propietarios, text="Sum (s/n)", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_alta_propietarios, textvariable=alta_sum, font=("Arial", 12)).pack(pady=2)
-    tk.Label(frame_alta_propietarios, text="Consumo Sum", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_alta_propietarios, textvariable=alta_consumosum, font=("Arial", 12)).pack(pady=2)
+    # Torre (A/B/C)
+    fila_torre = tk.Frame(frame_alta_propietarios, bg=grisfondo)
+    tk.Label(fila_torre, text="Torre (A/B/C):", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    rb_torre_a = tk.Radiobutton(fila_torre, text="A", variable=alta_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
+    rb_torre_b = tk.Radiobutton(fila_torre, text="B", variable=alta_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
+    rb_torre_c = tk.Radiobutton(fila_torre, text="C", variable=alta_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
+    rb_torre_a.pack(side=tk.LEFT, padx=5)
+    rb_torre_b.pack(side=tk.LEFT, padx=5)
+    rb_torre_c.pack(side=tk.LEFT, padx=5)
+    fila_torre.pack(pady=2, anchor="w")
+
+    # Piso
+    fila_piso = tk.Frame(frame_alta_propietarios, bg=grisfondo)
+    tk.Label(fila_piso, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_piso, textvariable=alta_piso, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_piso.pack(pady=2, anchor="w")
+
+    # Número
+    fila_numero = tk.Frame(frame_alta_propietarios, bg=grisfondo)
+    tk.Label(fila_numero, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_numero, textvariable=alta_numero, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_numero.pack(pady=2, anchor="w")
+
+    # Nombre y Apellido
+    fila_nombre = tk.Frame(frame_alta_propietarios, bg=grisfondo)
+    tk.Label(fila_nombre, text="Nombre y Apellido:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_nombre, textvariable=alta_nombre, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_nombre.pack(pady=2, anchor="w")
+
+    # Habitantes
+    fila_habitantes = tk.Frame(frame_alta_propietarios, bg=grisfondo)
+    tk.Label(fila_habitantes, text="Habitantes:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_habitantes, textvariable=alta_habitantes, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_habitantes.pack(pady=2, anchor="w")
+
+    # Fecha Compra
+    fila_fechac = tk.Frame(frame_alta_propietarios, bg=grisfondo)
+    tk.Label(fila_fechac, text="Fecha Compra:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_fechac, textvariable=alta_fechac, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_fechac.pack(pady=2, anchor="w")
+
+    # Fecha Venta
+    fila_fechav = tk.Frame(frame_alta_propietarios, bg=grisfondo)
+    tk.Label(fila_fechav, text="Fecha Venta:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_fechav, textvariable=alta_fechav, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_fechav.pack(pady=2, anchor="w")
+
+    # Cochera
+    fila_cochera = tk.Frame(frame_alta_propietarios, bg=grisfondo)
+    tk.Label(fila_cochera, text="Cochera (s/n):", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_cochera, textvariable=alta_cochera, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_cochera.pack(pady=2, anchor="w")
+
+    # Gym
+    fila_gym = tk.Frame(frame_alta_propietarios, bg=grisfondo)
+    tk.Label(fila_gym, text="Gym (s/n):", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_gym, textvariable=alta_gym, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_gym.pack(pady=2, anchor="w")
+
+    # Sum
+    fila_sum = tk.Frame(frame_alta_propietarios, bg=grisfondo)
+    tk.Label(fila_sum, text="Sum (s/n):", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_sum, textvariable=alta_sum, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_sum.pack(pady=2, anchor="w")
+
+    # Consumo Sum
+    fila_consumosum = tk.Frame(frame_alta_propietarios, bg=grisfondo)
+    tk.Label(fila_consumosum, text="Consumo Sum:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_consumosum, textvariable=alta_consumosum, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_consumosum.pack(pady=2, anchor="w")
 
     def guardar_propietario():
         torre = alta_torre.get().upper()
@@ -602,10 +683,15 @@ def baja_propietario():
     rb_torre_b.pack(side=tk.LEFT, padx=10)
     rb_torre_c.pack(side=tk.LEFT, padx=10)
 
-    tk.Label(frame_baja_propietarios, text="Piso", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_baja_propietarios, textvariable=baja_piso, font=("Arial", 12)).pack(pady=2)
-    tk.Label(frame_baja_propietarios, text="Número", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_baja_propietarios, textvariable=baja_numero, font=("Arial", 12)).pack(pady=2)
+    fila_piso = tk.Frame(frame_baja_propietarios, bg=grisfondo)
+    tk.Label(fila_piso, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_piso, textvariable=baja_piso, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_piso.pack(pady=2, anchor="w")
+
+    fila_numero = tk.Frame(frame_baja_propietarios, bg=grisfondo)
+    tk.Label(fila_numero, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_numero, textvariable=baja_numero, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_numero.pack(pady=2, anchor="w")
 
     def eliminar_propietario():
         torre = baja_torre.get().upper()
@@ -647,20 +733,23 @@ def modificacion_propietario():
     mod_index = [None]
 
     crear_titulo(frame_modificacion_propietarios, "Modificacion Propietario")
-    tk.Label(frame_modificacion_propietarios, text="Torre (A/B/C)", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    torre_frame = tk.Frame(frame_modificacion_propietarios, bg=grisfondo)
-    rb_torre_a = tk.Radiobutton(torre_frame, text="A", variable=mod_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_b = tk.Radiobutton(torre_frame, text="B", variable=mod_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_c = tk.Radiobutton(torre_frame, text="C", variable=mod_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    torre_frame.pack(pady=2)
-    rb_torre_a.pack(side=tk.LEFT, padx=10)
-    rb_torre_b.pack(side=tk.LEFT, padx=10)
-    rb_torre_c.pack(side=tk.LEFT, padx=10)
 
-    tk.Label(frame_modificacion_propietarios, text="Piso", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_modificacion_propietarios, textvariable=mod_piso, font=("Arial", 12)).pack(pady=2)
-    tk.Label(frame_modificacion_propietarios, text="Número", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_modificacion_propietarios, textvariable=mod_numero, font=("Arial", 12)).pack(pady=2)
+    fila_torre = tk.Frame(frame_modificacion_propietarios, bg=grisfondo)
+    tk.Label(fila_torre, text="Torre (A/B/C):", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Radiobutton(fila_torre, text="A", variable=mod_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_torre, text="B", variable=mod_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_torre, text="C", variable=mod_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    fila_torre.pack(pady=2, anchor="w")
+
+    fila_piso = tk.Frame(frame_modificacion_propietarios, bg=grisfondo)
+    tk.Label(fila_piso, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_piso, textvariable=mod_piso, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_piso.pack(pady=2, anchor="w")
+
+    fila_numero = tk.Frame(frame_modificacion_propietarios, bg=grisfondo)
+    tk.Label(fila_numero, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_numero, textvariable=mod_numero, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_numero.pack(pady=2, anchor="w")
 
     def buscar_modificar():
         torre = mod_torre.get().upper()
@@ -673,15 +762,18 @@ def modificacion_propietario():
                 return
         messagebox.showerror("Error", "El propietario no existe.")
 
-    btn_buscar = tk.Button(frame_modificacion_propietarios, text="Buscar", command=buscar_modificar, bg=griscuadros, fg=colortexto, font=("Arial", 12))
-    btn_buscar.pack(pady=10)
+    tk.Button(frame_modificacion_propietarios, text="Buscar", command=buscar_modificar, bg=griscuadros, fg=colortexto, font=("Arial", 12)).pack(pady=10)
 
     frame_mod_opciones = tk.Frame(frame_modificacion_propietarios, bg=grisfondo)
-    tk.Label(frame_mod_opciones, text="¿Qué desea modificar?", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
+    fila_opciones = tk.Frame(frame_mod_opciones, bg=grisfondo)
+    tk.Label(fila_opciones, text="¿Qué desea modificar?", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
     for campo in ["Nombre y Apellido", "Habitantes", "Fecha Compra", "Fecha Venta", "Cochera (s/n)", "Gym (s/n)", "Sum (s/n)", "Consumo Sum"]:
-        tk.Radiobutton(frame_mod_opciones, text=campo, variable=opcion_mod, value=campo, bg=grisfondo, fg=colorvolver, font=("Arial", 12)).pack(anchor="w")
-    tk.Label(frame_mod_opciones, text="Nuevo valor:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    tk.Entry(frame_mod_opciones, textvariable=nuevo_valor, font=("Arial", 12)).pack()
+        tk.Radiobutton(fila_opciones, text=campo, variable=opcion_mod, value=campo, bg=grisfondo, fg=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    fila_opciones.pack(pady=2, anchor="w")
+    fila_nuevo = tk.Frame(frame_mod_opciones, bg=grisfondo)
+    tk.Label(fila_nuevo, text="Nuevo valor:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Entry(fila_nuevo, textvariable=nuevo_valor, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_nuevo.pack(pady=2, anchor="w")
 
     def modificar_propietario():
         i = mod_index[0]
@@ -714,12 +806,9 @@ def modificacion_propietario():
         frame_modificacion_propietarios.pack_forget()
         mostrar_frame(frame_propietarios)
 
-    btn_modificar = tk.Button(frame_mod_opciones, text="Modificar", command=modificar_propietario, bg=griscuadros, fg=colortexto, font=("Arial", 12))
-    btn_modificar.pack(pady=10)
-    btn_volver_opciones = tk.Button(frame_mod_opciones, text="Volver", command=lambda: frame_mod_opciones.pack_forget(), bg=colorvolver, fg="white", font=("Arial", 12))
-    btn_volver_opciones.pack(pady=10)
-    btn_volver = tk.Button(frame_modificacion_propietarios, text="Volver", command=lambda: mostrar_frame(frame_propietarios), bg=colorvolver, fg="white", font=("Arial", 12))
-    btn_volver.pack(pady=10)
+    tk.Button(frame_mod_opciones, text="Modificar", command=modificar_propietario, bg=griscuadros, fg=colortexto, font=("Arial", 12)).pack(pady=10)
+    tk.Button(frame_mod_opciones, text="Volver", command=lambda: frame_mod_opciones.pack_forget(), bg=colorvolver, fg="white", font=("Arial", 12)).pack(pady=10)
+    tk.Button(frame_modificacion_propietarios, text="Volver", command=lambda: mostrar_frame(frame_propietarios), bg=colorvolver, fg="white", font=("Arial", 12)).pack(pady=10)
 
 def consulta_propietario():
     for widget in frame_consulta_propietarios.winfo_children():
@@ -727,33 +816,40 @@ def consulta_propietario():
 
     consulta_var = tk.StringVar()
     consulta_torre = tk.StringVar()
-    consulta_entry2 = tk.Entry(frame_consulta_propietarios, font=("Arial", 12))
-    consulta_entry3 = tk.Entry(frame_consulta_propietarios, font=("Arial", 12))
+    consulta_piso = tk.StringVar()
+    consulta_numero = tk.StringVar()
 
     crear_titulo(frame_consulta_propietarios, "Consulta Propietario")
-    tk.Label(frame_consulta_propietarios, text="Filtrar por:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    tk.Radiobutton(frame_consulta_propietarios, text="Torre", variable=consulta_var, value="torre", bg=grisfondo, fg=colortexto).pack(anchor="w")
-    tk.Radiobutton(frame_consulta_propietarios, text="Torre y Piso", variable=consulta_var, value="torre_piso", bg=grisfondo, fg=colortexto).pack(anchor="w")
-    tk.Radiobutton(frame_consulta_propietarios, text="Torre, Piso y Número", variable=consulta_var, value="torre_piso_num", bg=grisfondo, fg=colortexto).pack(anchor="w")
-    tk.Label(frame_consulta_propietarios, text="Torre:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    torre_frame = tk.Frame(frame_consulta_propietarios, bg=grisfondo)
-    rb_torre_a = tk.Radiobutton(torre_frame, text="A", variable=consulta_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_b = tk.Radiobutton(torre_frame, text="B", variable=consulta_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_c = tk.Radiobutton(torre_frame, text="C", variable=consulta_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    torre_frame.pack(pady=2)
-    rb_torre_a.pack(side=tk.LEFT, padx=10)
-    rb_torre_b.pack(side=tk.LEFT, padx=10)
-    rb_torre_c.pack(side=tk.LEFT, padx=10)
-    tk.Label(frame_consulta_propietarios, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    consulta_entry2.pack()
-    tk.Label(frame_consulta_propietarios, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    consulta_entry3.pack()
+
+    fila_filtro = tk.Frame(frame_consulta_propietarios, bg=grisfondo)
+    tk.Label(fila_filtro, text="Filtrar por:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Radiobutton(fila_filtro, text="Torre", variable=consulta_var, value="torre", bg=grisfondo, fg=colortexto).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_filtro, text="Torre y Piso", variable=consulta_var, value="torre_piso", bg=grisfondo, fg=colortexto).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_filtro, text="Torre, Piso y Número", variable=consulta_var, value="torre_piso_num", bg=grisfondo, fg=colortexto).pack(side=tk.LEFT, padx=5)
+    fila_filtro.pack(pady=2, anchor="w")
+
+    fila_torre = tk.Frame(frame_consulta_propietarios, bg=grisfondo)
+    tk.Label(fila_torre, text="Torre:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Radiobutton(fila_torre, text="A", variable=consulta_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_torre, text="B", variable=consulta_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_torre, text="C", variable=consulta_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    fila_torre.pack(pady=2, anchor="w")
+
+    fila_piso = tk.Frame(frame_consulta_propietarios, bg=grisfondo)
+    tk.Label(fila_piso, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Entry(fila_piso, textvariable=consulta_piso, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_piso.pack(pady=2, anchor="w")
+
+    fila_numero = tk.Frame(frame_consulta_propietarios, bg=grisfondo)
+    tk.Label(fila_numero, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Entry(fila_numero, textvariable=consulta_numero, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_numero.pack(pady=2, anchor="w")
 
     def consultar():
         filtro = consulta_var.get()
         torre = consulta_torre.get().upper()
-        piso = consulta_entry2.get()
-        ndpto = consulta_entry3.get()
+        piso = consulta_piso.get()
+        ndpto = consulta_numero.get()
         resultados = []
         if filtro == "torre":
             resultados = [f"Torre: {torresp[h]}, Piso: {pisosp[h]}, Departamento: {dptosp[h]}, Nombre: {nombresyapellidos[h]}, Habitantes: {habitantess[h]}, Compra: {fechasc[h]}, Venta: {fechasv[h]}, Cochera: {cocheras_p[h]}, Gym: {gyms[h]}, Sum: {sums[h]}, Consumo Sum: {dsums[h]}" for h in range(len(torresp)) if torresp[h] == torre]
@@ -765,10 +861,8 @@ def consulta_propietario():
             resultados = ["Seleccione un filtro."]
         messagebox.showinfo("Consulta", "\n".join(resultados) if resultados else "Sin resultados.")
 
-    btn_consultar = tk.Button(frame_consulta_propietarios, text="Consultar", command=consultar, bg=griscuadros, fg=colortexto, font=("Arial", 12))
-    btn_consultar.pack(pady=10)
-    btn_volver = tk.Button(frame_consulta_propietarios, text="Volver", command=lambda: mostrar_frame(frame_propietarios), bg=colorvolver, fg="white", font=("Arial", 12))
-    btn_volver.pack(pady=10)
+    tk.Button(frame_consulta_propietarios, text="Consultar", command=consultar, bg=griscuadros, fg=colortexto, font=("Arial", 12)).pack(pady=10)
+    tk.Button(frame_consulta_propietarios, text="Volver", command=lambda: mostrar_frame(frame_propietarios), bg=colorvolver, fg="white", font=("Arial", 12)).pack(pady=10)
 
 def listado_propietario():
     for widget in frame_listado_propietarios.winfo_children():
@@ -776,33 +870,44 @@ def listado_propietario():
 
     listado_var = tk.StringVar()
     listado_torre = tk.StringVar()
-    listado_entry2 = tk.Entry(frame_listado_propietarios, font=("Arial", 12))
-    listado_entry3 = tk.Entry(frame_listado_propietarios, font=("Arial", 12))
+    listado_piso = tk.StringVar()
+    listado_numero = tk.StringVar()
 
     crear_titulo(frame_listado_propietarios, "Listado Propietarios")
-    tk.Label(frame_listado_propietarios, text="Filtrar por:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    tk.Radiobutton(frame_listado_propietarios, text="Torre", variable=listado_var, value="torre", bg=grisfondo, fg=colortexto).pack(anchor="w")
-    tk.Radiobutton(frame_listado_propietarios, text="Torre y Piso", variable=listado_var, value="torre_piso", bg=grisfondo, fg=colortexto).pack(anchor="w")
-    tk.Radiobutton(frame_listado_propietarios, text="Torre, Piso y Número", variable=listado_var, value="torre_piso_num", bg=grisfondo, fg=colortexto).pack(anchor="w")
-    tk.Label(frame_listado_propietarios, text="Torre:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    torre_frame = tk.Frame(frame_listado_propietarios, bg=grisfondo)
-    rb_torre_a = tk.Radiobutton(torre_frame, text="A", variable=listado_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_b = tk.Radiobutton(torre_frame, text="B", variable=listado_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_c = tk.Radiobutton(torre_frame, text="C", variable=listado_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    torre_frame.pack(pady=2)
-    rb_torre_a.pack(side=tk.LEFT, padx=10)
-    rb_torre_b.pack(side=tk.LEFT, padx=10)
-    rb_torre_c.pack(side=tk.LEFT, padx=10)
-    tk.Label(frame_listado_propietarios, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    listado_entry2.pack()
-    tk.Label(frame_listado_propietarios, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    listado_entry3.pack()
+
+    fila_filtro = tk.Frame(frame_listado_propietarios, bg=grisfondo)
+    tk.Label(fila_filtro, text="Filtrar por:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Radiobutton(fila_filtro, text="Torre", variable=listado_var, value="torre", bg=grisfondo, fg=colortexto).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_filtro, text="Torre y Piso", variable=listado_var, value="torre_piso", bg=grisfondo, fg=colortexto).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_filtro, text="Torre, Piso y Número", variable=listado_var, value="torre_piso_num", bg=grisfondo, fg=colortexto).pack(side=tk.LEFT, padx=5)
+    fila_filtro.pack(pady=2, anchor="w")
+
+    fila_torre = tk.Frame(frame_listado_propietarios, bg=grisfondo)
+    tk.Label(fila_torre, text="Torre:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    rb_torre_a = tk.Radiobutton(fila_torre, text="A", variable=listado_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
+    rb_torre_b = tk.Radiobutton(fila_torre, text="B", variable=listado_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
+    rb_torre_c = tk.Radiobutton(fila_torre, text="C", variable=listado_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
+    rb_torre_a.pack(side=tk.LEFT, padx=5)
+    rb_torre_b.pack(side=tk.LEFT, padx=5)
+    rb_torre_c.pack(side=tk.LEFT, padx=5)
+    rb_torre_a.select()
+    fila_torre.pack(pady=2, anchor="w")
+
+    fila_piso = tk.Frame(frame_listado_propietarios, bg=grisfondo)
+    tk.Label(fila_piso, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Entry(fila_piso, textvariable=listado_piso, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_piso.pack(pady=2, anchor="w")
+
+    fila_numero = tk.Frame(frame_listado_propietarios, bg=grisfondo)
+    tk.Label(fila_numero, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Entry(fila_numero, textvariable=listado_numero, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_numero.pack(pady=2, anchor="w")
 
     def listar():
         filtro = listado_var.get()
         torre = listado_torre.get().upper()
-        piso = listado_entry2.get()
-        ndpto = listado_entry3.get()
+        piso = listado_piso.get()
+        ndpto = listado_numero.get()
         resultados = []
         if filtro == "torre":
             resultados = [f"Torre: {torresp[h]}, Piso: {pisosp[h]}, Departamento: {dptosp[h]}, Nombre: {nombresyapellidos[h]}, Habitantes: {habitantess[h]}, Compra: {fechasc[h]}, Venta: {fechasv[h]}, Cochera: {cocheras_p[h]}, Gym: {gyms[h]}, Sum: {sums[h]}, Consumo Sum: {dsums[h]}" for h in range(len(torresp)) if torresp[h] == torre]
@@ -817,10 +922,8 @@ def listado_propietario():
                 archivo.write(r + '\n')
         messagebox.showinfo("Listado", "\n".join(resultados) if resultados else "Sin resultados.")
 
-    btn_listar = tk.Button(frame_listado_propietarios, text="Listar", command=listar, bg=griscuadros, fg=colortexto, font=("Arial", 12))
-    btn_listar.pack(pady=10)
-    btn_volver = tk.Button(frame_listado_propietarios, text="Volver", command=lambda: mostrar_frame(frame_propietarios), bg=colorvolver, fg="white", font=("Arial", 12))
-    btn_volver.pack(pady=10)
+    tk.Button(frame_listado_propietarios, text="Listar", command=listar, bg=griscuadros, fg=colortexto, font=("Arial", 12)).pack(pady=10)
+    tk.Button(frame_listado_propietarios, text="Volver", command=lambda: mostrar_frame(frame_propietarios), bg=colorvolver, fg="white", font=("Arial", 12)).pack(pady=10)
 
 def alta_cochera():
     for widget in frame_alta_cocheras.winfo_children():
@@ -833,25 +936,41 @@ def alta_cochera():
     alta_libre = tk.StringVar()
 
     crear_titulo(frame_alta_cocheras, "Alta Cochera")
-    tk.Label(frame_alta_cocheras, text="Torre (A/B/C)", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    torre_frame = tk.Frame(frame_alta_cocheras, bg=grisfondo)
-    tk.Radiobutton(torre_frame, text="A", variable=alta_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=10)
-    tk.Radiobutton(torre_frame, text="B", variable=alta_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=10)
-    tk.Radiobutton(torre_frame, text="C", variable=alta_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=10)
-    torre_frame.pack(pady=2)
-    tk.Label(frame_alta_cocheras, text="Piso", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_alta_cocheras, textvariable=alta_piso, font=("Arial", 12)).pack(pady=2)
-    tk.Label(frame_alta_cocheras, text="Número", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_alta_cocheras, textvariable=alta_numero, font=("Arial", 12)).pack(pady=2)
-    tk.Label(frame_alta_cocheras, text="Metros Cubiertos", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_alta_cocheras, textvariable=alta_metros, font=("Arial", 12)).pack(pady=2)
-    tk.Label(frame_alta_cocheras, text="Libre (s/n)", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_alta_cocheras, textvariable=alta_libre, font=("Arial", 12)).pack(pady=2)
+
+    fila_torre = tk.Frame(frame_alta_cocheras, bg=grisfondo)
+    tk.Label(fila_torre, text="Torre (A/B/C):", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Radiobutton(fila_torre, text="A", variable=alta_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_torre, text="B", variable=alta_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_torre, text="C", variable=alta_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    fila_torre.pack(pady=2, anchor="w")
+
+    fila_piso = tk.Frame(frame_alta_cocheras, bg=grisfondo)
+    tk.Label(fila_piso, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_piso, textvariable=alta_piso, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_piso.pack(pady=2, anchor="w")
+
+    fila_numero = tk.Frame(frame_alta_cocheras, bg=grisfondo)
+    tk.Label(fila_numero, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_numero, textvariable=alta_numero, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_numero.pack(pady=2, anchor="w")
+
+    fila_metros = tk.Frame(frame_alta_cocheras, bg=grisfondo)
+    tk.Label(fila_metros, text="Metros Cubiertos:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_metros, textvariable=alta_metros, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_metros.pack(pady=2, anchor="w")
+
+    fila_libre = tk.Frame(frame_alta_cocheras, bg=grisfondo)
+    tk.Label(fila_libre, text="Libre (s/n):", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_libre, textvariable=alta_libre, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_libre.pack(pady=2, anchor="w")
 
     def guardar_cochera():
         torre = alta_torre.get().upper()
         piso = alta_piso.get()
         ndpto = alta_numero.get()
+
+
+
         if torre not in ("A", "B", "C"):
             messagebox.showerror("Error", "Torre inválida.")
             return
@@ -870,6 +989,7 @@ def alta_cochera():
     tk.Button(frame_alta_cocheras, text="Guardar", command=guardar_cochera, bg=griscuadros, fg=colortexto, font=("Arial", 12)).pack(pady=10)
     tk.Button(frame_alta_cocheras, text="Volver", command=lambda: mostrar_frame(frame_cocheras), bg=colorvolver, fg="white", font=("Arial", 12)).pack(pady=10)
 
+# --- MODIFICACION COCHERA ---
 def modificacion_cochera():
     for widget in frame_modificacion_cocheras.winfo_children():
         widget.destroy()
@@ -882,16 +1002,23 @@ def modificacion_cochera():
     mod_index = [None]
 
     crear_titulo(frame_modificacion_cocheras, "Modificacion Cochera")
-    tk.Label(frame_modificacion_cocheras, text="Torre (A/B/C)", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    torre_frame = tk.Frame(frame_modificacion_cocheras, bg=grisfondo)
-    tk.Radiobutton(torre_frame, text="A", variable=mod_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=10)
-    tk.Radiobutton(torre_frame, text="B", variable=mod_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=10)
-    tk.Radiobutton(torre_frame, text="C", variable=mod_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=10)
-    torre_frame.pack(pady=2)
-    tk.Label(frame_modificacion_cocheras, text="Piso", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_modificacion_cocheras, textvariable=mod_piso, font=("Arial", 12)).pack(pady=2)
-    tk.Label(frame_modificacion_cocheras, text="Número", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack(pady=2)
-    tk.Entry(frame_modificacion_cocheras, textvariable=mod_numero, font=("Arial", 12)).pack(pady=2)
+
+    fila_torre = tk.Frame(frame_modificacion_cocheras, bg=grisfondo)
+    tk.Label(fila_torre, text="Torre (A/B/C):", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Radiobutton(fila_torre, text="A", variable=mod_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_torre, text="B", variable=mod_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_torre, text="C", variable=mod_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    fila_torre.pack(pady=2, anchor="w")
+
+    fila_piso = tk.Frame(frame_modificacion_cocheras, bg=grisfondo)
+    tk.Label(fila_piso, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_piso, textvariable=mod_piso, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_piso.pack(pady=2, anchor="w")
+
+    fila_numero = tk.Frame(frame_modificacion_cocheras, bg=grisfondo)
+    tk.Label(fila_numero, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT, padx=2)
+    tk.Entry(fila_numero, textvariable=mod_numero, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_numero.pack(pady=2, anchor="w")
 
     def buscar_modificar():
         torre = mod_torre.get().upper()
@@ -907,11 +1034,15 @@ def modificacion_cochera():
     tk.Button(frame_modificacion_cocheras, text="Buscar", command=buscar_modificar, bg=griscuadros, fg=colortexto, font=("Arial", 12)).pack(pady=10)
 
     frame_mod_opciones = tk.Frame(frame_modificacion_cocheras, bg=grisfondo)
-    tk.Label(frame_mod_opciones, text="¿Qué desea modificar?", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
+    fila_opciones = tk.Frame(frame_mod_opciones, bg=grisfondo)
+    tk.Label(fila_opciones, text="¿Qué desea modificar?", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
     for campo in ["Metros Cubiertos", "Libre (s/n)"]:
-        tk.Radiobutton(frame_mod_opciones, text=campo, variable=opcion_mod, value=campo, bg=grisfondo, fg=colorvolver, font=("Arial", 12)).pack(anchor="w")
-    tk.Label(frame_mod_opciones, text="Nuevo valor:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    tk.Entry(frame_mod_opciones, textvariable=nuevo_valor, font=("Arial", 12)).pack()
+        tk.Radiobutton(fila_opciones, text=campo, variable=opcion_mod, value=campo, bg=grisfondo, fg=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    fila_opciones.pack(pady=2, anchor="w")
+    fila_nuevo = tk.Frame(frame_mod_opciones, bg=grisfondo)
+    tk.Label(fila_nuevo, text="Nuevo valor:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Entry(fila_nuevo, textvariable=nuevo_valor, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_nuevo.pack(pady=2, anchor="w")
 
     def modificar_cochera():
         i = mod_index[0]
@@ -936,46 +1067,54 @@ def modificacion_cochera():
     tk.Button(frame_mod_opciones, text="Volver", command=lambda: frame_mod_opciones.pack_forget(), bg=colorvolver, fg="white", font=("Arial", 12)).pack(pady=10)
     tk.Button(frame_modificacion_cocheras, text="Volver", command=lambda: mostrar_frame(frame_cocheras), bg=colorvolver, fg="white", font=("Arial", 12)).pack(pady=10)
 
+# --- CONSULTA COCHERA ---
 def consulta_cochera():
     for widget in frame_consulta_cocheras.winfo_children():
         widget.destroy()
 
     consulta_var = tk.StringVar()
     consulta_torre = tk.StringVar()
-    consulta_entry2 = tk.Entry(frame_consulta_cocheras, font=("Arial", 12))
-    consulta_entry3 = tk.Entry(frame_consulta_cocheras, font=("Arial", 12))
+    consulta_piso = tk.StringVar()
+    consulta_numero = tk.StringVar()
 
     crear_titulo(frame_consulta_cocheras, "Consulta Cochera")
-    tk.Label(frame_consulta_cocheras, text="Filtrar por:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    tk.Radiobutton(frame_consulta_cocheras, text="Torre", variable=consulta_var, value="torre", bg=grisfondo, fg=colortexto).pack(anchor="w")
-    tk.Radiobutton(frame_consulta_cocheras, text="Torre y Piso", variable=consulta_var, value="torre_piso", bg=grisfondo, fg=colortexto).pack(anchor="w")
-    tk.Radiobutton(frame_consulta_cocheras, text="Torre, Piso y Número", variable=consulta_var, value="torre_piso_num", bg=grisfondo, fg=colortexto).pack(anchor="w")
-    tk.Label(frame_consulta_cocheras, text="Torre:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    torre_frame = tk.Frame(frame_consulta_cocheras, bg=grisfondo)
-    rb_torre_a = tk.Radiobutton(torre_frame, text="A", variable=consulta_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_b = tk.Radiobutton(torre_frame, text="B", variable=consulta_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_c = tk.Radiobutton(torre_frame, text="C", variable=consulta_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    torre_frame.pack(pady=2)
-    rb_torre_a.pack(side=tk.LEFT, padx=10)
-    rb_torre_b.pack(side=tk.LEFT, padx=10)
-    rb_torre_c.pack(side=tk.LEFT, padx=10)
-    tk.Label(frame_consulta_cocheras, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    consulta_entry2.pack()
-    tk.Label(frame_consulta_cocheras, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    consulta_entry3.pack()
+
+    fila_filtro = tk.Frame(frame_consulta_cocheras, bg=grisfondo)
+    tk.Label(fila_filtro, text="Filtrar por:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Radiobutton(fila_filtro, text="Torre", variable=consulta_var, value="torre", bg=grisfondo, fg=colortexto).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_filtro, text="Torre y Piso", variable=consulta_var, value="torre_piso", bg=grisfondo, fg=colortexto).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_filtro, text="Torre, Piso y Número", variable=consulta_var, value="torre_piso_num", bg=grisfondo, fg=colortexto).pack(side=tk.LEFT, padx=5)
+    fila_filtro.pack(pady=2, anchor="w")
+
+    fila_torre = tk.Frame(frame_consulta_cocheras, bg=grisfondo)
+    tk.Label(fila_torre, text="Torre:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Radiobutton(fila_torre, text="A", variable=consulta_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_torre, text="B", variable=consulta_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_torre, text="C", variable=consulta_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12)).pack(side=tk.LEFT, padx=5)
+    fila_torre.pack(pady=2, anchor="w")
+
+    fila_piso = tk.Frame(frame_consulta_cocheras, bg=grisfondo)
+    tk.Label(fila_piso, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Entry(fila_piso, textvariable=consulta_piso, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_piso.pack(pady=2, anchor="w")
+
+    fila_numero = tk.Frame(frame_consulta_cocheras, bg=grisfondo)
+    tk.Label(fila_numero, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Entry(fila_numero, textvariable=consulta_numero, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_numero.pack(pady=2, anchor="w")
 
     def consultar():
         filtro = consulta_var.get()
         torre = consulta_torre.get().upper()
-        piso = consulta_entry2.get()
-        ndpto = consulta_entry3.get()
+        piso = consulta_piso.get()
+        ndpto = consulta_numero.get()
         resultados = []
         if filtro == "torre":
-            resultados = [f"Torre: {torresc[h]}, Piso: {pisosc[h]}, Cochera: {dptosc[h]}, Metros cubiertos: {mtcubiertossc[h]}, Libre: {libres[h]}" for h in range(len(torresc)) if torresc[h] == torre]
+            resultados = [f"Torre: {torresc[h]}, Piso: {pisosc[h]}, Cochera: {dptosc[h]}, Metros cubiertos: {mtcubiertoss[h]}, Libre: {libres[h]}" for h in range(len(torresc)) if torresc[h] == torre]
         elif filtro == "torre_piso":
-            resultados = [f"Torre: {torresc[h]}, Piso: {pisosc[h]}, Cochera: {dptosc[h]}, Metros cubiertos: {mtcubiertossc[h]}, Libre: {libres[h]}" for h in range(len(torresc)) if torresc[h] == torre and pisosc[h] == piso]
+            resultados = [f"Torre: {torresc[h]}, Piso: {pisosc[h]}, Cochera: {dptosc[h]}, Metros cubiertos: {mtcubiertoss[h]}, Libre: {libres[h]}" for h in range(len(torresc)) if torresc[h] == torre and pisosc[h] == piso]
         elif filtro == "torre_piso_num":
-            resultados = [f"Torre: {torresc[h]}, Piso: {pisosc[h]}, Cochera: {dptosc[h]}, Metros cubiertos: {mtcubiertossc[h]}, Libre: {libres[h]}" for h in range(len(torresc)) if torresc[h] == torre and pisosc[h] == piso and dptosc[h] == ndpto]
+            resultados = [f"Torre: {torresc[h]}, Piso: {pisosc[h]}, Cochera: {dptosc[h]}, Metros cubiertos: {mtcubiertoss[h]}, Libre: {libres[h]}" for h in range(len(torresc)) if torresc[h] == torre and pisosc[h] == piso and dptosc[h] == ndpto]
         else:
             resultados = ["Seleccione un filtro."]
         messagebox.showinfo("Consulta", "\n".join(resultados) if resultados else "Sin resultados.")
@@ -983,46 +1122,58 @@ def consulta_cochera():
     tk.Button(frame_consulta_cocheras, text="Consultar", command=consultar, bg=griscuadros, fg=colortexto, font=("Arial", 12)).pack(pady=10)
     tk.Button(frame_consulta_cocheras, text="Volver", command=lambda: mostrar_frame(frame_cocheras), bg=colorvolver, fg="white", font=("Arial", 12)).pack(pady=10)
 
+# --- LISTADO COCHERA ---
 def listado_cochera():
     for widget in frame_listado_cocheras.winfo_children():
         widget.destroy()
 
     listado_var = tk.StringVar()
     listado_torre = tk.StringVar()
-    listado_entry2 = tk.Entry(frame_listado_cocheras, font=("Arial", 12))
-    listado_entry3 = tk.Entry(frame_listado_cocheras, font=("Arial", 12))
+    listado_piso = tk.StringVar()
+    listado_numero = tk.StringVar()
 
     crear_titulo(frame_listado_cocheras, "Listado Cocheras")
-    tk.Label(frame_listado_cocheras, text="Filtrar por:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    tk.Radiobutton(frame_listado_cocheras, text="Torre", variable=listado_var, value="torre", bg=grisfondo, fg=colortexto).pack(anchor="w")
-    tk.Radiobutton(frame_listado_cocheras, text="Torre y Piso", variable=listado_var, value="torre_piso", bg=grisfondo, fg=colortexto).pack(anchor="w")
-    tk.Radiobutton(frame_listado_cocheras, text="Torre, Piso y Número", variable=listado_var, value="torre_piso_num", bg=grisfondo, fg=colortexto).pack(anchor="w")
-    tk.Label(frame_listado_cocheras, text="Torre:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    torre_frame = tk.Frame(frame_listado_cocheras, bg=grisfondo)
-    rb_torre_a = tk.Radiobutton(torre_frame, text="A", variable=listado_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_b = tk.Radiobutton(torre_frame, text="B", variable=listado_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_c = tk.Radiobutton(torre_frame, text="C", variable=listado_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
-    rb_torre_a.pack(side=tk.LEFT, padx=10)
-    rb_torre_b.pack(side=tk.LEFT, padx=10)
-    rb_torre_c.pack(side=tk.LEFT, padx=10)
-    torre_frame.pack(pady=2)
-    tk.Label(frame_listado_cocheras, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    listado_entry2.pack()
-    tk.Label(frame_listado_cocheras, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12)).pack()
-    listado_entry3.pack()
+
+    fila_filtro = tk.Frame(frame_listado_cocheras, bg=grisfondo)
+    tk.Label(fila_filtro, text="Filtrar por:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Radiobutton(fila_filtro, text="Torre", variable=listado_var, value="torre", bg=grisfondo, fg=colortexto).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_filtro, text="Torre y Piso", variable=listado_var, value="torre_piso", bg=grisfondo, fg=colortexto).pack(side=tk.LEFT, padx=5)
+    tk.Radiobutton(fila_filtro, text="Torre, Piso y Número", variable=listado_var, value="torre_piso_num", bg=grisfondo, fg=colortexto).pack(side=tk.LEFT, padx=5)
+    fila_filtro.pack(pady=2, anchor="w")
+
+    fila_torre = tk.Frame(frame_listado_cocheras, bg=grisfondo)
+    tk.Label(fila_torre, text="Torre:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    rb_torre_a = tk.Radiobutton(fila_torre, text="A", variable=listado_torre, value="A", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
+    rb_torre_b = tk.Radiobutton(fila_torre, text="B", variable=listado_torre, value="B", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
+    rb_torre_c = tk.Radiobutton(fila_torre, text="C", variable=listado_torre, value="C", bg=grisfondo, fg=colortexto, selectcolor=colorvolver, font=("Arial", 12))
+    rb_torre_a.pack(side=tk.LEFT, padx=5)
+    rb_torre_b.pack(side=tk.LEFT, padx=5)
+    rb_torre_c.pack(side=tk.LEFT, padx=5)
+    rb_torre_a.select()
+    fila_torre.pack(pady=2, anchor="w")
+
+    fila_piso = tk.Frame(frame_listado_cocheras, bg=grisfondo)
+    tk.Label(fila_piso, text="Piso:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Entry(fila_piso, textvariable=listado_piso, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_piso.pack(pady=2, anchor="w")
+
+    fila_numero = tk.Frame(frame_listado_cocheras, bg=grisfondo)
+    tk.Label(fila_numero, text="Número:", bg=grisfondo, fg=colortexto, font=("Arial", 12), width=18, anchor="w").pack(side=tk.LEFT)
+    tk.Entry(fila_numero, textvariable=listado_numero, font=("Arial", 12), width=20).pack(side=tk.LEFT)
+    fila_numero.pack(pady=2, anchor="w")
 
     def listar():
         filtro = listado_var.get()
         torre = listado_torre.get().upper()
-        piso = listado_entry2.get()
-        ndpto = listado_entry3.get()
+        piso = listado_piso.get()
+        ndpto = listado_numero.get()
         resultados = []
         if filtro == "torre":
-            resultados = [f"Torre: {torresc[h]}, Piso: {pisosc[h]}, Cochera: {dptosc[h]}, Metros cubiertos: {mtcubiertossc[h]}, Libre: {libres[h]}" for h in range(len(torresc)) if torresc[h] == torre]
+            resultados = [f"Torre: {torresc[h]}, Piso: {pisosc[h]}, Cochera: {dptosc[h]}, Metros cubiertos: {mtcubiertoss[h]}, Libre: {libres[h]}" for h in range(len(torresc)) if torresc[h] == torre]
         elif filtro == "torre_piso":
-            resultados = [f"Torre: {torresc[h]}, Piso: {pisosc[h]}, Cochera: {dptosc[h]}, Metros cubiertos: {mtcubiertossc[h]}, Libre: {libres[h]}" for h in range(len(torresc)) if torresc[h] == torre and pisos[h] == piso]
+            resultados = [f"Torre: {torresc[h]}, Piso: {pisosc[h]}, Cochera: {dptosc[h]}, Metros cubiertos: {mtcubiertoss[h]}, Libre: {libres[h]}" for h in range(len(torresc)) if torresc[h] == torre and pisosc[h] == piso]
         elif filtro == "torre_piso_num":
-            resultados = [f"Torre: {torresc[h]}, Piso: {pisosc[h]}, Cochera: {dptosc[h]}, Metros cubiertos: {mtcubiertossc[h]}, Libre: {libres[h]}" for h in range(len(torresc)) if torresc[h] == torre and pisos[h] == piso and dptosc[h] == ndpto]
+            resultados = [f"Torre: {torresc[h]}, Piso: {pisosc[h]}, Cochera: {dptosc[h]}, Metros cubiertos: {mtcubiertoss[h]}, Libre: {libres[h]}" for h in range(len(torresc)) if torresc[h] == torre and pisosc[h] == piso and dptosc[h] == ndpto]
         else:
             resultados = ["Seleccione un filtro."]
         with open("listado_coch.txt", "a") as archivo:
@@ -1032,7 +1183,7 @@ def listado_cochera():
 
     tk.Button(frame_listado_cocheras, text="Listar", command=listar, bg=griscuadros, fg=colortexto, font=("Arial", 12)).pack(pady=10)
     tk.Button(frame_listado_cocheras, text="Volver", command=lambda: mostrar_frame(frame_cocheras), bg=colorvolver, fg="white", font=("Arial", 12)).pack(pady=10)
-    
+
 def liquidacion():
     pagaeldobleA = 0
     pagaeldobleB = 0
@@ -1160,6 +1311,23 @@ def liquidacion():
 
     msg += "Agua común: " + str(aguacomun) + "\n"
 
-    messagebox.showinfo("Liquidación", msg)
+    # Mostrar en ventana nueva con scroll
+    ventana = tk.Toplevel(root)
+    ventana.title("Liquidación")
+    ventana.geometry("700x600")
+    ventana.configure(bg=grisfondo)
+
+    frame_texto = tk.Frame(ventana, bg=grisfondo)
+    frame_texto.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+    scrollbar = tk.Scrollbar(frame_texto)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    texto = tk.Text(frame_texto, wrap=tk.WORD, yscrollcommand=scrollbar.set, font=("Consolas", 11), bg="#222", fg="#EDE8D0")
+    texto.insert(tk.END, msg)
+    texto.config(state=tk.DISABLED)
+    texto.pack(fill=tk.BOTH, expand=True)
+
+    scrollbar.config(command=texto.yview)
 
 root.mainloop()
