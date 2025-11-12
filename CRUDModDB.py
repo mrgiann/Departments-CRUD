@@ -1,6 +1,5 @@
 import os
 import sqlite3
-from contextlib import closing
 
 
 DB_FILENAME = "CRUDMod.db"
@@ -22,17 +21,17 @@ def pedir_opcion_sn(mensaje: str) -> str:
         print("❌ Responda con S o N.")
 
 
-def get_connection():
-    needs_seed = not os.path.exists(DB_FILENAME)
-    conn = sqlite3.connect(DB_FILENAME)
-    conn.row_factory = sqlite3.Row
-    create_tables(conn)
-    if needs_seed:
-        seed_data(conn)
-    return conn
+def obtener_conexion():
+    nueva_base = not os.path.exists(DB_FILENAME)
+    conexion = sqlite3.connect(DB_FILENAME)
+    conexion.row_factory = sqlite3.Row
+    crear_tablas(conexion)
+    if nueva_base:
+        cargar_datos_iniciales(conexion)
+    return conexion
 
 
-def create_tables(conn: sqlite3.Connection) -> None:
+def crear_tablas(conn: sqlite3.Connection) -> None:
     with conn:
         conn.execute(
             """
@@ -82,7 +81,7 @@ def create_tables(conn: sqlite3.Connection) -> None:
         )
 
 
-def seed_data(conn: sqlite3.Connection) -> None:
+def cargar_datos_iniciales(conn: sqlite3.Connection) -> None:
     departamentos = [
         ("B", 2, 1, 4, 20, 15, 11, 18),
         ("C", 1, 2, 7, 20, 25, 22, 26),
@@ -929,79 +928,77 @@ def calcular_liquidacion(conn):
         print("ℹ️ No hay departamentos para liquidar.")
         return
 
-    torres = [d["torre"] for d in departamentos]
-    cant_depas_por_torre = {torre: torres.count(torre) for torre in ("A", "B", "C")}
+    cantidad_por_torre = {"A": 0, "B": 0, "C": 0}
+    for depa in departamentos:
+        cantidad_por_torre[depa["torre"]] += 1
 
-    seguridad_torre = {
-        torre: (150000 / cant if cant else 0) for torre, cant in cant_depas_por_torre.items()
-    }
-    seguridad_cochera = {torre: valor / 2 for torre, valor in seguridad_torre.items()}
+    seguridad_torre = {}
+    seguridad_cochera = {}
+    for torre, cantidad in cantidad_por_torre.items():
+        if cantidad == 0:
+            seguridad_torre[torre] = 0
+            seguridad_cochera[torre] = 0
+        else:
+            valor = 150000 / cantidad
+            seguridad_torre[torre] = valor
+            seguridad_cochera[torre] = valor / 2
 
     paga_doble = {"A": 0, "B": 0, "C": 0}
     for depa in departamentos:
         if depa["metros_cubiertos"] >= 100:
-            torre = depa["torre"]
-            paga_doble[torre] += seguridad_torre[torre] * 2
+            paga_doble[depa["torre"]] += seguridad_torre[depa["torre"]] * 2
 
-    luz_consumida = [d["luz"] * 15000 for d in departamentos]
-    agua_consumida = [d["agua"] * 1000 for d in departamentos]
-    gas_consumido = [d["gas"] * 5000 for d in departamentos]
+    moradores_sum = 0
+    for propietario in propietarios:
+        if propietario["sum"] == "s":
+            moradores_sum += 1
+    if moradores_sum == 0:
+        moradores_sum = 1
+    costo_sum = 80000 / moradores_sum
 
-    sum_total = sum(1 for propietario in propietarios if propietario["sum"] == "s") or 1
-    sum_consumo = 80000 / sum_total
-    dias_sum_consumo = [propietario["dias_sum"] * 40000 for propietario in propietarios]
-    impuesto_departamentos = [d["metros_cubiertos"] * 400 for d in departamentos]
-    impuesto_cocheras = [c["metros_cubiertos"] * 200 for c in cocheras]
-
-    pagannormaldepa = []
-    pagandobledepa = []
-    for depa in departamentos:
-        if depa["piso"] < 5:
-            pagannormaldepa.append(depa)
-        elif depa["piso"] > 5:
-            pagandobledepa.append(depa)
-
-    pagannormalcoch = []
-    paga20coch = []
-    propietario_index = {(p["torre"], p["piso"], p["numero"]): p for p in propietarios}
-    for cochera in cocheras:
-        key = (cochera["torre"], cochera["piso"], cochera["numero"])
-        if key in propietario_index:
-            paga20coch.append(cochera)
-        else:
-            pagannormalcoch.append(cochera)
+    indice_propietarios = {}
+    for propietario in propietarios:
+        clave = (propietario["torre"], propietario["piso"], propietario["numero"])
+        indice_propietarios[clave] = propietario
 
     print("\n--- Liquidación por Torre ---")
     for torre in ("A", "B", "C"):
+        multiplicador = 2 if torre == "C" else 1
         print(f"Torre {torre} paga por seguridad:")
-        factor = 2 if torre == "C" else 1
-        print(f" - Por departamento: {int(seguridad_torre[torre] * factor)}")
-        print(f" - Por cochera: {int(seguridad_cochera[torre] * factor)}")
+        print(f" - Por departamento: {int(seguridad_torre[torre] * multiplicador)}")
+        print(f" - Por cochera: {int(seguridad_cochera[torre] * multiplicador)}")
         print(f"Departamentos mayores a 100m2 pagan el doble en Torre {torre}: {int(paga_doble[torre])}")
     print()
 
     print("--- Liquidación por Departamento ---")
-    for idx, depa in enumerate(departamentos):
-        print(f"Depto {depa['torre']} - {depa['piso']} - {depa['numero']}")
-        agua = agua_consumida[idx]
-        gas = gas_consumido[idx]
-        luz = luz_consumida[idx]
-        impuesto = impuesto_departamentos[idx]
-        propietario = propietario_index.get((depa["torre"], depa["piso"], depa["numero"]))
-        dias_sum = dias_sum_consumo[idx] if idx < len(dias_sum_consumo) else 0
+    total_departamentos = 0
+    for depa in departamentos:
+        clave = (depa["torre"], depa["piso"], depa["numero"])
+        propietario = indice_propietarios.get(clave)
 
-        if propietario and propietario["sum"] == "s":
-            uso_sum = sum_consumo
-        else:
-            uso_sum = 0
+        agua = depa["agua"] * 1000
+        gas = depa["gas"] * 5000
+        luz = depa["luz"] * 15000
+        impuesto = depa["metros_cubiertos"] * 400
+        dias_sum = 0
+        uso_sum = 0
+
+        if propietario:
+            dias_sum = propietario["dias_sum"] * 40000
+            if propietario["sum"] == "s":
+                uso_sum = costo_sum
 
         if depa["torre"] == "C":
             uso_sum *= 2
 
-        luz_comun = seguridad_torre[depa["torre"]] * (2 if depa["torre"] == "C" else 1)
+        luz_comun = seguridad_torre[depa["torre"]]
+        if depa["torre"] == "C":
+            luz_comun *= 2
 
         total = agua + gas + luz + impuesto + uso_sum + dias_sum + luz_comun
+        total_departamentos += total
 
+        print(f"Depto {depa['torre']} - {depa['piso']} - {depa['numero']}")
         print(f"  Agua: {int(agua)}")
         print(f"  Gas: {int(gas)}")
         print(f"  Luz: {int(luz)}")
@@ -1012,41 +1009,19 @@ def calcular_liquidacion(conn):
         print(f"  Total a pagar: {int(total)}\n")
 
     print("--- Liquidación por Cochera ---")
-    for idx, cochera in enumerate(cocheras):
-        print(f"Cochera {cochera['torre']} - {cochera['piso']} - {cochera['numero']}")
-        impuesto = impuesto_cocheras[idx]
-        seguridad = seguridad_cochera[cochera["torre"]] * (2 if cochera["torre"] == "C" else 1)
+    total_cocheras = 0
+    for cochera in cocheras:
+        impuesto = cochera["metros_cubiertos"] * 200
+        seguridad = seguridad_cochera[cochera["torre"]]
+        if cochera["torre"] == "C":
+            seguridad *= 2
         total = impuesto + seguridad
+        total_cocheras += total
 
+        print(f"Cochera {cochera['torre']} - {cochera['piso']} - {cochera['numero']}")
         print(f"  Impuesto especial: {int(impuesto)}")
         print(f"  Seguridad: {int(seguridad)}")
         print(f"  Total a pagar: {int(total)}\n")
-
-    total_departamentos = 0
-    for idx, depa in enumerate(departamentos):
-        agua = agua_consumida[idx]
-        gas = gas_consumido[idx]
-        luz = luz_consumida[idx]
-        impuesto = impuesto_departamentos[idx]
-        propietario = propietario_index.get((depa["torre"], depa["piso"], depa["numero"]))
-        dias_sum = dias_sum_consumo[idx] if idx < len(dias_sum_consumo) else 0
-
-        if propietario and propietario["sum"] == "s":
-            uso_sum = sum_consumo
-        else:
-            uso_sum = 0
-
-        if depa["torre"] == "C":
-            uso_sum *= 2
-
-        luz_comun = seguridad_torre[depa["torre"]] * (2 if depa["torre"] == "C" else 1)
-        total_departamentos += agua + gas + luz + impuesto + uso_sum + dias_sum + luz_comun
-
-    total_cocheras = 0
-    for idx, cochera in enumerate(cocheras):
-        impuesto = impuesto_cocheras[idx]
-        seguridad = seguridad_cochera[cochera["torre"]] * (2 if cochera["torre"] == "C" else 1)
-        total_cocheras += impuesto + seguridad
 
     print("--- Resumen Final ---")
     print(f"Total departamentos: {int(total_departamentos)}")
@@ -1082,8 +1057,11 @@ def menu_principal(conn):
 
 
 def main():
-    with closing(get_connection()) as conn:
+    conn = obtener_conexion()
+    try:
         menu_principal(conn)
+    finally:
+        conn.close()
 
 
 if __name__ == "__main__":
