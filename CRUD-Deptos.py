@@ -1,0 +1,1086 @@
+import os
+import sqlite3
+
+#Nombre del archivo db
+nombreArchivoDB = "CRUD-Deptos.db"
+
+#Para profe (ctrl + K  y seguido de eso ctrl + 0 para contraer todo el codigo)
+
+# Explicacion de algunas funciones usadas:
+# conn.execute(...) envía una consulta SQL a la base de datos mediante la conexión 'conn' la consulta puede ser SELECT, INSERT, UPDATE, DELETE o cualquier instrucción SQL.
+# uso "with conn:" para que se haga el commit automatico y se guarden los cambios
+# el .row_factory = sqlite3.Row me permite acceder a los campos por nombre en vez de por indice
+# el .fetchone() devuelve una sola fila, el fetchall() devuelve todas las filas
+
+
+
+
+#Verificaciones para las entradas de datos
+def pedirNumero(mensaje: str) -> int:
+    while True:
+        valor = input(mensaje)
+        if valor.isdigit():
+            return int(valor)
+        print("❌ Por favor, ingrese solo números enteros.")
+
+def pedirOpcionSN(mensaje: str) -> str:
+    while True:
+        opcion = input(mensaje).strip().lower()
+        if opcion in ("s", "n"):
+            return opcion
+        print("❌ Responda con S o N.")
+
+def solicitarTorre(mensaje="Ingrese la torre (A/B/C): ") -> str:
+    while True:
+        torre = input(mensaje).strip().upper()
+        if torre in ("A", "B", "C"):
+            return torre
+        print("❌ Torre inválida. Debe ser A, B o C.")
+
+
+
+# Obtener conexion al archivo db y si no existe lo crea y llama las funciones de crear tabla y cargar datos iniciales
+def obtener_conexion():
+    nuevaBase = not os.path.exists(nombreArchivoDB)
+    conexion = sqlite3.connect(nombreArchivoDB)
+    conexion.row_factory = sqlite3.Row
+    crear_tablas(conexion)
+    if nuevaBase:
+        cargar_datos_iniciales(conexion)
+    return conexion
+
+#Crea tablas y carga datos iniciales
+def crear_tablas(conn: sqlite3.Connection) -> None:
+    with conn:
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS departamentos (
+                torre TEXT NOT NULL CHECK(torre IN ('A','B','C')),
+                piso INTEGER NOT NULL,
+                numero INTEGER NOT NULL,
+                habitaciones INTEGER NOT NULL,
+                metros_cubiertos INTEGER NOT NULL,
+                luz INTEGER NOT NULL,
+                agua INTEGER NOT NULL,
+                gas INTEGER NOT NULL,
+                PRIMARY KEY (torre, piso, numero)
+            )
+            """
+        )
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS propietarios (
+                torre TEXT NOT NULL CHECK(torre IN ('A','B','C')),
+                piso INTEGER NOT NULL,
+                numero INTEGER NOT NULL,
+                nombre TEXT NOT NULL,
+                habitantes INTEGER NOT NULL,
+                fecha_compra TEXT NOT NULL,
+                fecha_venta TEXT NOT NULL,
+                cochera TEXT NOT NULL CHECK(cochera IN ('s','n')),
+                gym TEXT NOT NULL CHECK(gym IN ('s','n')),
+                sum TEXT NOT NULL CHECK(sum IN ('s','n')),
+                dias_sum INTEGER NOT NULL,
+                PRIMARY KEY (torre, piso, numero),
+                FOREIGN KEY (torre, piso, numero) REFERENCES departamentos(torre, piso, numero)
+            )
+            """
+        )
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS cocheras (
+                torre TEXT NOT NULL CHECK(torre IN ('A','B','C')),
+                piso INTEGER NOT NULL,
+                numero INTEGER NOT NULL,
+                metros_cubiertos INTEGER NOT NULL,
+                libre TEXT NOT NULL CHECK(libre IN ('s','n')),
+                PRIMARY KEY (torre, piso, numero)
+            )
+            """
+        )
+
+def cargar_datos_iniciales(conn: sqlite3.Connection) -> None:
+    departamentos = [
+        ("B", 2, 1, 4, 20, 15, 11, 18),
+        ("C", 1, 2, 7, 20, 25, 22, 26),
+        ("B", 7, 3, 4, 30, 35, 33, 34),
+        ("A", 6, 4, 8, 100, 45, 44, 47),
+        ("A", 5, 5, 9, 50, 55, 55, 51),
+    ]
+    propietarios = [
+        ("B", 2, 1, "Juan Perez", 4, "01/01/2020", "00/00/0000", "s", "s", "s", 0),
+        ("C", 1, 2, "Maria Lopez", 7, "02/02/2021", "00/00/0000", "n", "n", "n", 0),
+        ("B", 7, 3, "Carlos Gomez", 4, "03/03/2022", "00/00/0000", "s", "s", "s", 0),
+        ("A", 6, 4, "Ana Fernandez", 8, "04/04/2023", "00/00/0000", "n", "n", "n", 0),
+        ("A", 5, 5, "Luis Martinez", 9, "05/05/2024", "00/00/0000", "s", "s", "s", 0),
+    ]
+    cocheras = [
+        ("A", 1, 1, 20, "s"),
+        ("B", 2, 2, 30, "n"),
+        ("C", 3, 3, 40, "s"),
+        ("A", 4, 4, 50, "n"),
+        ("B", 5, 5, 60, "s"),
+    ]
+    with conn:
+        conn.executemany(
+            """
+            INSERT OR IGNORE INTO departamentos
+            (torre, piso, numero, habitaciones, metros_cubiertos, luz, agua, gas)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            departamentos,
+        )
+        conn.executemany(
+            """
+            INSERT OR IGNORE INTO propietarios
+            (torre, piso, numero, nombre, habitantes, fecha_compra, fecha_venta, cochera, gym, sum, dias_sum)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            propietarios,
+        )
+        conn.executemany(
+            """
+            INSERT OR IGNORE INTO cocheras
+            (torre, piso, numero, metros_cubiertos, libre)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            cocheras,
+        )
+
+
+#Obtener registros
+def obtener_departamento(conn, torre, piso, numero):
+    cur = conn.execute(
+        "SELECT * FROM departamentos WHERE torre = ? AND piso = ? AND numero = ?",
+        (torre, piso, numero),
+    )
+    return cur.fetchone()
+
+def obtener_propietario(conn, torre, piso, numero):
+    cur = conn.execute(
+        "SELECT * FROM propietarios WHERE torre = ? AND piso = ? AND numero = ?",
+        (torre, piso, numero),
+    )
+    return cur.fetchone()
+
+def obtener_cochera(conn, torre, piso, numero):
+    cur = conn.execute(
+        "SELECT * FROM cocheras WHERE torre = ? AND piso = ? AND numero = ?",
+        (torre, piso, numero),
+    )
+    return cur.fetchone()
+
+
+
+#Funcion para guardar listados en un archivo txt (no me funcionaba el pdf)
+def guardar_en_listado(texto: str) -> None:
+    with open("listado.txt", "a", encoding="utf-8") as archivo:
+        archivo.write(texto + "\n")
+
+
+
+#Todo departamentos
+def cargar_departamento(conn):
+    print("Cargar departamento")
+    while True:
+        torre = solicitarTorre()
+        piso = pedirNumero("Ingrese el piso: ")
+        numero = pedirNumero("Ingrese el número de departamento: ")
+        if obtener_departamento(conn, torre, piso, numero):
+            print("❌ El departamento ya existe.")
+            if pedirOpcionSN("¿Desea intentar con otro departamento? (S/N): ") == "s":
+                continue
+            return
+        break
+
+    habitaciones = pedirNumero("Ingrese la cantidad de habitaciones: ")
+    metros = pedirNumero("Ingrese los metros cubiertos: ")
+    luz = pedirNumero("Ingrese el consumo de luz: ")
+    agua = pedirNumero("Ingrese el consumo de agua: ")
+    gas = pedirNumero("Ingrese el consumo de gas: ")
+
+    if pedirOpcionSN("Confirmar datos? (S/N): ") == "s":
+        with conn:
+            conn.execute(
+                """
+                INSERT INTO departamentos
+                (torre, piso, numero, habitaciones, metros_cubiertos, luz, agua, gas)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (torre, piso, numero, habitaciones, metros, luz, agua, gas),
+            )
+        print("✅ Departamento cargado exitosamente.")
+    else:
+        print("ℹ️ Carga de departamento cancelada.")
+
+def eliminar_departamento(): #aca no se pone parametro conn porque no es utilizado
+    print("ℹ️ No se puede eliminar un departamento.")
+
+def modificar_departamento(conn):
+    print("Modificar departamento")
+    torre = solicitarTorre()
+    piso = pedirNumero("Ingrese el piso: ")
+    numero = pedirNumero("Ingrese el número de departamento: ")
+    registro = obtener_departamento(conn, torre, piso, numero)
+    if not registro:
+        print("❌ El departamento no existe.")
+        return
+
+    print("---------------------------------------------------------------------")
+    print("               Ingrese qué quiere modificar                         ")
+    print("---------------------------------------------------------------------")
+    print(" 1 - Habitaciones")
+    print(" 2 - Metros cubiertos")
+    print(" 3 - Consumo de luz")
+    print(" 4 - Consumo de agua")
+    print(" 5 - Consumo de gas")
+    print("---------------------------------------------------------------------")
+    opcion = input("Ingrese una opción: ").strip()
+
+    campos = {
+        "1": ("habitaciones", "Ingrese la nueva cantidad de habitaciones: "),
+        "2": ("metros_cubiertos", "Ingrese los nuevos metros cubiertos: "),
+        "3": ("luz", "Ingrese el nuevo consumo de luz: "),
+        "4": ("agua", "Ingrese el nuevo consumo de agua: "),
+        "5": ("gas", "Ingrese el nuevo consumo de gas: "),
+    }
+
+    if opcion not in campos:
+        print("❌ Opción inválida.")
+        return
+
+    campo, mensaje = campos[opcion]
+    nuevo_valor = pedirNumero(mensaje)
+    if pedirOpcionSN("Confirmar modificación? (S/N): ") == "s":
+        with conn:
+            conn.execute(
+                f"""
+                UPDATE departamentos
+                SET {campo} = ?
+                WHERE torre = ? AND piso = ? AND numero = ?
+                """,
+                (nuevo_valor, torre, piso, numero),
+            )
+        print("✅ Modificación de departamento confirmada.")
+    else:
+        print("ℹ️ Modificación de departamento cancelada.")
+
+def consultar_departamento(conn):
+    print("---------------------------------------------------------------------")
+    print("                  Consultar departamento                             ")
+    print("         Elija opción para filtrar la consulta                      ")
+    print("---------------------------------------------------------------------")
+    print(" 1 - Consultar por torre")
+    print(" 2 - Consultar por torre y piso")
+    print(" 3 - Consultar por torre, piso y departamento")
+    print("---------------------------------------------------------------------")
+    opcion = input("Ingrese una opción: ").strip()
+
+    if opcion == "1":
+        torre = solicitarTorre()
+        registros = conn.execute(
+            """
+            SELECT * FROM departamentos
+            WHERE torre = ?
+            ORDER BY piso, numero
+            """,
+            (torre,),
+        ).fetchall()
+    elif opcion == "2":
+        torre = solicitarTorre()
+        piso = pedirNumero("Ingrese el piso: ")
+        registros = conn.execute(
+            """
+            SELECT * FROM departamentos
+            WHERE torre = ? AND piso = ?
+            ORDER BY numero
+            """,
+            (torre, piso),
+        ).fetchall()
+    elif opcion == "3":
+        torre = solicitarTorre()
+        piso = pedirNumero("Ingrese el piso: ")
+        numero = pedirNumero("Ingrese el número de departamento: ")
+        registros = [
+            obtener_departamento(conn, torre, piso, numero)
+        ]
+    else:
+        print("❌ Opción inválida.")
+        return
+
+    encontrados = []
+    for r in registros:
+        if r:
+            encontrados.append(r)
+    if not encontrados:
+        print("ℹ️ No se encontraron registros.")
+        return
+
+    for registro in encontrados:
+        print(
+            f"Torre: {registro['torre']}, Piso: {registro['piso']}, Departamento: {registro['numero']}, "
+            f"Habitaciones: {registro['habitaciones']}, Metros cubiertos: {registro['metros_cubiertos']}, "
+            f"Luz: {registro['luz']}, Agua: {registro['agua']}, Gas: {registro['gas']}"
+        )
+
+def listar_departamentos(conn):
+    print("---------------------------------------------------------------------")
+    print("                   Listar departamentos                              ")
+    print("         Elija opción para filtrar la consulta                      ")
+    print("---------------------------------------------------------------------")
+    print(" 1 - Consultar por torre")
+    print(" 2 - Consultar por torre y piso")
+    print(" 3 - Consultar por torre, piso y departamento")
+    print("---------------------------------------------------------------------")
+    opcion = input("Ingrese una opción: ").strip()
+
+    if opcion == "1":
+        torre = solicitarTorre()
+        registros = conn.execute(
+            """
+            SELECT * FROM departamentos
+            WHERE torre = ?
+            ORDER BY piso, numero
+            """,
+            (torre,),
+        ).fetchall()
+    elif opcion == "2":
+        torre = solicitarTorre()
+        piso = pedirNumero("Ingrese el piso: ")
+        registros = conn.execute(
+            """
+            SELECT * FROM departamentos
+            WHERE torre = ? AND piso = ?
+            ORDER BY numero
+            """,
+            (torre, piso),
+        ).fetchall()
+    elif opcion == "3":
+        torre = solicitarTorre()
+        piso = pedirNumero("Ingrese el piso: ")
+        numero = pedirNumero("Ingrese el número de departamento: ")
+        registro = obtener_departamento(conn, torre, piso, numero)
+        registros = [registro] if registro else []
+    else:
+        print("❌ Opción inválida.")
+        return
+
+    if not registros:
+        print("ℹ️ No se encontraron registros.")
+        return
+
+    for registro in registros:
+        frase = (
+            f"Torre: {registro['torre']}, Piso: {registro['piso']}, Departamento: {registro['numero']}, "
+            f"Habitaciones: {registro['habitaciones']}, Metros cubiertos: {registro['metros_cubiertos']}, "
+            f"Luz: {registro['luz']}, Agua: {registro['agua']}, Gas: {registro['gas']}"
+        )
+        print(frase)
+        guardar_en_listado(frase)
+    print("ℹ️ La información se ha guardado en listado.txt.")
+
+def menu_departamentos(conn):
+    while True:
+        print("-------------------------------------------------------------")
+        print("                       Menu de departamentos                 ")
+        print("-------------------------------------------------------------")
+        print(" 1 - ➕ Cargar departamento")
+        print(" 2 - ❌ Eliminar departamento")
+        print(" 3 - ✏️ Modificar departamento")
+        print(" 4 - 🔍 Consultar departamento")
+        print(" 5 - 📋 Listar departamentos")
+        print(" 0 - ⛔ Volver")
+        print("-------------------------------------------------------------")
+        opcion = input("Ingrese una opción: ").strip()
+
+        if opcion == "1":
+            cargar_departamento(conn)
+        elif opcion == "2":
+            eliminar_departamento()
+        elif opcion == "3":
+            modificar_departamento(conn)
+        elif opcion == "4":
+            consultar_departamento(conn)
+        elif opcion == "5":
+            listar_departamentos(conn)
+        elif opcion == "0":
+            break
+        else:
+            print("❌ Opción inválida. Intente de nuevo.")
+
+
+
+#Todo propietarios
+def cargar_propietario(conn):
+    print("Cargar propietario")
+    while True:
+        torre = solicitarTorre()
+        piso = pedirNumero("Ingrese el piso: ")
+        numero = pedirNumero("Ingrese el número de departamento: ")
+        if not obtener_departamento(conn, torre, piso, numero):
+            print("❌ El departamento no existe.")
+            if pedirOpcionSN("¿Desea volver a intentar? (S/N): ") == "s":
+                continue
+            return
+        if obtener_propietario(conn, torre, piso, numero):
+            print("❌ El propietario ya está registrado para ese departamento.")
+            return
+        break
+
+    nombre = input("Ingrese el nombre y apellido del propietario: ")
+    habitantes = pedirNumero("Ingrese la cantidad de habitantes: ")
+    dia = pedirNumero("Ingrese el día de compra del departamento: ")
+    mes = pedirNumero("Ingrese el mes de compra del departamento: ")
+    anio = pedirNumero("Ingrese el año de compra del departamento: ")
+    fecha_compra = f"{dia:02d}/{mes:02d}/{anio}"
+    fecha_venta = "00/00/0000"
+
+    cochera = ""
+    while cochera not in ("s", "n"):
+        cochera = input("¿El propietario tiene cochera? (S/N): ").strip().lower()
+    gym = ""
+    while gym not in ("s", "n"):
+        gym = input("¿El propietario tiene acceso al gimnasio? (S/N): ").strip().lower()
+    sum_acceso = ""
+    while sum_acceso not in ("s", "n"):
+        sum_acceso = input("¿El propietario tiene acceso al SUM? (S/N): ").strip().lower()
+    if sum_acceso == "s":
+        dias_sum = pedirNumero("Ingrese la cantidad de días de uso del SUM: ")
+    else:
+        dias_sum = 0
+
+    if pedirOpcionSN("Confirmar datos? (S/N): ") == "s":
+        with conn:
+            conn.execute(
+                """
+                INSERT INTO propietarios
+                (torre, piso, numero, nombre, habitantes, fecha_compra, fecha_venta,
+                 cochera, gym, sum, dias_sum)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    torre,
+                    piso,
+                    numero,
+                    nombre,
+                    habitantes,
+                    fecha_compra,
+                    fecha_venta,
+                    cochera,
+                    gym,
+                    sum_acceso,
+                    dias_sum,
+                ),
+            )
+        print("✅ Propietario cargado exitosamente.")
+    else:
+        print("ℹ️ Carga de propietario cancelada.")
+
+def eliminar_propietario(conn):
+    print("Eliminar propietario")
+    torre = solicitarTorre()
+    piso = pedirNumero("Ingrese el piso: ")
+    numero = pedirNumero("Ingrese el número de departamento: ")
+    registro = obtener_propietario(conn, torre, piso, numero)
+    if not registro:
+        print("❌ El propietario no existe.")
+        return
+
+    if pedirOpcionSN("¿Está seguro que desea eliminar el propietario? (S/N): ") == "s":
+        dia = pedirNumero("Ingrese el día de la venta del departamento: ")
+        mes = pedirNumero("Ingrese el mes de la venta del departamento: ")
+        anio = pedirNumero("Ingrese el año de la venta del departamento: ")
+        fecha_venta = f"{dia:02d}/{mes:02d}/{anio}"
+        with conn:
+            conn.execute(
+                """
+                UPDATE propietarios
+                SET fecha_venta = ?
+                WHERE torre = ? AND piso = ? AND numero = ?
+                """,
+                (fecha_venta, torre, piso, numero),
+            )
+        print("✅ Propietario eliminado exitosamente.")
+    else:
+        print("ℹ️ Eliminación de propietario cancelada.")
+
+def modificar_propietario(conn):
+    print("Modificar propietario")
+    torre = solicitarTorre()
+    piso = pedirNumero("Ingrese el piso: ")
+    numero = pedirNumero("Ingrese el número de departamento: ")
+    registro = obtener_propietario(conn, torre, piso, numero)
+    if not registro:
+        print("❌ El propietario no existe.")
+        return
+
+    print("-------------------------------------------------------------------")
+    print("                 Ingrese qué quiere modificar                      ")
+    print("-------------------------------------------------------------------")
+    print(" 1 - Habitantes")
+    print(" 2 - Fecha de compra")
+    print(" 3 - Gym")
+    print(" 4 - Sum")
+    print(" 5 - Días de uso del Sum")
+    print("-------------------------------------------------------------------")
+    opcion = input("Ingrese una opción: ").strip()
+
+    if opcion == "1":
+        nuevo_valor = pedirNumero("Ingrese la nueva cantidad de habitantes: ")
+        campo = "habitantes"
+    elif opcion == "2":
+        dia = pedirNumero("Ingrese el nuevo día de compra: ")
+        mes = pedirNumero("Ingrese el nuevo mes de compra: ")
+        anio = pedirNumero("Ingrese el nuevo año de compra: ")
+        nuevo_valor = f"{dia:02d}/{mes:02d}/{anio}"
+        campo = "fecha_compra"
+    elif opcion == "3":
+        nuevo_valor = pedirOpcionSN("¿El propietario tiene acceso al gimnasio? (S/N): ")
+        campo = "gym"
+    elif opcion == "4":
+        nuevo_valor = pedirOpcionSN("¿El propietario tiene acceso al SUM? (S/N): ")
+        campo = "sum"
+        if nuevo_valor == "n":
+            with conn:
+                conn.execute(
+                    """
+                    UPDATE propietarios
+                    SET sum = 'n', dias_sum = 0
+                    WHERE torre = ? AND piso = ? AND numero = ?
+                    """,
+                    (torre, piso, numero),
+                )
+            print("✅ Modificación de propietario confirmada.")
+            return
+    elif opcion == "5":
+        nuevo_valor = pedirNumero("Ingrese la nueva cantidad de días de uso del SUM: ")
+        campo = "dias_sum"
+    else:
+        print("❌ Opción inválida.")
+        return
+
+    if pedirOpcionSN("Confirmar modificación? (S/N): ") == "s":
+        with conn:
+            conn.execute(
+                f"""
+                UPDATE propietarios
+                SET {campo} = ?
+                WHERE torre = ? AND piso = ? AND numero = ?
+                """,
+                (nuevo_valor, torre, piso, numero),
+            )
+        print("✅ Modificación de propietario confirmada.")
+    else:
+        print("ℹ️ Modificación de propietario cancelada.")
+
+def consultar_propietario(conn):
+    print("---------------------------------------------------------------------")
+    print("                    Consultar propietario                            ")
+    print("                Elija opción para filtrar la consulta                ")
+    print("---------------------------------------------------------------------")
+    print(" 1 - Consultar por nombre y apellido")
+    print(" 2 - Consultar por torre y piso")
+    print(" 3 - Consultar por torre, piso y departamento")
+    print("---------------------------------------------------------------------")
+    opcion = input("Ingrese una opción: ").strip()
+
+    if opcion == "1":
+        nombre = input("Ingrese el nombre y apellido del propietario: ")
+        registros = conn.execute(
+            """
+            SELECT * FROM propietarios
+            WHERE nombre = ?
+            ORDER BY torre, piso, numero
+            """,
+            (nombre,),
+        ).fetchall()
+    elif opcion == "2":
+        torre = solicitarTorre()
+        piso = pedirNumero("Ingrese el piso: ")
+        registros = conn.execute(
+            """
+            SELECT * FROM propietarios
+            WHERE torre = ? AND piso = ?
+            ORDER BY numero
+            """,
+            (torre, piso),
+        ).fetchall()
+    elif opcion == "3":
+        torre = solicitarTorre()
+        piso = pedirNumero("Ingrese el piso: ")
+        numero = pedirNumero("Ingrese el número de departamento: ")
+        registros = [
+            obtener_propietario(conn, torre, piso, numero)
+        ]
+    else:
+        print("❌ Opción inválida.")
+        return
+
+    encontrados = []
+    for r in registros:
+        if r:
+            encontrados.append(r)
+    if not encontrados:
+        print("ℹ️ No se encontraron registros.")
+        return
+
+    for registro in encontrados:
+        print(
+            f"Torre: {registro['torre']}, Piso: {registro['piso']}, Departamento: {registro['numero']}, "
+            f"Nombre y Apellido: {registro['nombre']}, Habitantes: {registro['habitantes']}, "
+            f"Fecha de compra: {registro['fecha_compra']}, Fecha de venta: {registro['fecha_venta']}, "
+            f"Gym: {registro['gym']}, Sum: {registro['sum']}, Días de uso del Sum: {registro['dias_sum']}"
+        )
+
+def listar_propietarios(conn):
+    print("---------------------------------------------------------------------")
+    print("                    Listar propietarios                              ")
+    print("                Elija opción para filtrar la consulta                ")
+    print("---------------------------------------------------------------------")
+    print(" 1 - Consultar por nombre y apellido")
+    print(" 2 - Consultar por torre y piso")
+    print(" 3 - Consultar por torre, piso y departamento")
+    print("---------------------------------------------------------------------")
+    opcion = input("Ingrese una opción: ").strip()
+
+    if opcion == "1":
+        nombre = input("Ingrese el nombre y apellido del propietario: ")
+        registros = conn.execute(
+            """
+            SELECT * FROM propietarios
+            WHERE nombre = ?
+            ORDER BY torre, piso, numero
+            """,
+            (nombre,),
+        ).fetchall()
+    elif opcion == "2":
+        torre = solicitarTorre()
+        piso = pedirNumero("Ingrese el piso: ")
+        registros = conn.execute(
+            """
+            SELECT * FROM propietarios
+            WHERE torre = ? AND piso = ?
+            ORDER BY numero
+            """,
+            (torre, piso),
+        ).fetchall()
+    elif opcion == "3":
+        torre = solicitarTorre()
+        piso = pedirNumero("Ingrese el piso: ")
+        numero = pedirNumero("Ingrese el número de departamento: ")
+        registro = obtener_propietario(conn, torre, piso, numero)
+        registros = [registro] if registro else []
+    else:
+        print("❌ Opción inválida.")
+        return
+
+    if not registros:
+        print("ℹ️ No se encontraron registros.")
+        return
+
+    for registro in registros:
+        frase = (
+            f"Torre: {registro['torre']}, Piso: {registro['piso']}, Departamento: {registro['numero']}, "
+            f"Nombre y Apellido: {registro['nombre']}, Habitantes: {registro['habitantes']}, "
+            f"Fecha de compra: {registro['fecha_compra']}, Fecha de venta: {registro['fecha_venta']}, "
+            f"Gym: {registro['gym']}, Sum: {registro['sum']}, Días de uso del Sum: {registro['dias_sum']}"
+        )
+        print(frase)
+        guardar_en_listado(frase)
+    print("ℹ️ La información se ha guardado en listado.txt.")
+
+def menu_propietarios(conn):
+    while True:
+        print("-----------------------------------------------------------------")
+        print("                     Menú de propietarios                       ")
+        print("-----------------------------------------------------------------")
+        print(" 1 - ➕ Cargar propietario")
+        print(" 2 - ➖ Eliminar propietario")
+        print(" 3 - ✏️ Modificar propietario")
+        print(" 4 - 🔍 Consultar propietario")
+        print(" 5 - 📋 Listar propietarios")
+        print(" 0 - ⛔ Volver")
+        print("-----------------------------------------------------------------")
+        opcion = input("Ingrese una opción: ").strip()
+
+        if opcion == "1":
+            cargar_propietario(conn)
+        elif opcion == "2":
+            eliminar_propietario(conn)
+        elif opcion == "3":
+            modificar_propietario(conn)
+        elif opcion == "4":
+            consultar_propietario(conn)
+        elif opcion == "5":
+            listar_propietarios(conn)
+        elif opcion == "0":
+            break
+        else:
+            print("❌ Opción inválida. Intente de nuevo.")
+
+
+
+#Todo cocheras
+def cargar_cochera(conn):
+    print("Cargar cochera")
+    while True:
+        torre = solicitarTorre()
+        piso = pedirNumero("Ingrese el piso: ")
+        numero = pedirNumero("Ingrese el número de departamento: ")
+        if obtener_cochera(conn, torre, piso, numero):
+            print("❌ La cochera ya existe.")
+            if pedirOpcionSN("¿Desea intentar con otra cochera? (S/N): ") == "s":
+                continue
+            return
+        break
+
+    metros = pedirNumero("Ingrese los metros cubiertos de la cochera: ")
+    libre = pedirOpcionSN("¿La cochera está libre? (S/N): ")
+
+    if pedirOpcionSN("Confirmar datos? (S/N): ") == "s":
+        with conn:
+            conn.execute(
+                """
+                INSERT INTO cocheras (torre, piso, numero, metros_cubiertos, libre)
+                VALUES (?, ?, ?, ?, ?)
+                """,
+                (torre, piso, numero, metros, libre),
+            )
+        print("✅ Cochera cargada exitosamente.")
+    else:
+        print("ℹ️ Carga de cochera cancelada.")
+
+def modificar_cochera(conn):
+    print("Modificar cochera")
+    torre = solicitarTorre()
+    piso = pedirNumero("Ingrese el piso: ")
+    numero = pedirNumero("Ingrese el número de departamento: ")
+    registro = obtener_cochera(conn, torre, piso, numero)
+    if not registro:
+        print("❌ La cochera no existe.")
+        return
+
+    print("--------------------------------------------------------")
+    print("                Ingrese qué quiere modificar            ")
+    print("--------------------------------------------------------")
+    print(" 1 - Metros cubiertos")
+    print(" 2 - Cochera libre (S/N)")
+    print("--------------------------------------------------------")
+    opcion = input("Ingrese una opción: ").strip()
+
+    if opcion == "1":
+        nuevo_valor = pedirNumero("Ingrese los nuevos metros cubiertos de la cochera: ")
+        campo = "metros_cubiertos"
+    elif opcion == "2":
+        nuevo_valor = pedirOpcionSN("¿La cochera está libre? (S/N): ")
+        campo = "libre"
+    else:
+        print("❌ Opción inválida.")
+        return
+
+    if pedirOpcionSN("Confirmar modificación? (S/N): ") == "s":
+        with conn:
+            conn.execute(
+                f"""
+                UPDATE cocheras
+                SET {campo} = ?
+                WHERE torre = ? AND piso = ? AND numero = ?
+                """,
+                (nuevo_valor, torre, piso, numero),
+            )
+        print("✅ Modificación de cochera confirmada.")
+    else:
+        print("ℹ️ Modificación de cochera cancelada.")
+
+def consultar_cochera(conn):
+    print("---------------------------------------------------------------------")
+    print("                    Consultar cochera                               ")
+    print("                Elija opción para filtrar la consulta               ")
+    print("---------------------------------------------------------------------")
+    print(" 1 - Consultar por torre")
+    print(" 2 - Consultar por torre y piso")
+    print(" 3 - Consultar por torre, piso y departamento")
+    print("---------------------------------------------------------------------")
+    opcion = input("Ingrese una opción: ").strip()
+
+    if opcion == "1":
+        torre = solicitarTorre()
+        registros = conn.execute(
+            """
+            SELECT * FROM cocheras
+            WHERE torre = ?
+            ORDER BY piso, numero
+            """,
+            (torre,),
+        ).fetchall()
+    elif opcion == "2":
+        torre = solicitarTorre()
+        piso = pedirNumero("Ingrese el piso: ")
+        registros = conn.execute(
+            """
+            SELECT * FROM cocheras
+            WHERE torre = ? AND piso = ?
+            ORDER BY numero
+            """,
+            (torre, piso),
+        ).fetchall()
+    elif opcion == "3":
+        torre = solicitarTorre()
+        piso = pedirNumero("Ingrese el piso: ")
+        numero = pedirNumero("Ingrese el número de departamento: ")
+        registros = [
+            obtener_cochera(conn, torre, piso, numero)
+        ]
+    else:
+        print("❌ Opción inválida.")
+        return
+
+    encontrados = []
+    for r in registros:
+        if r:
+            encontrados.append(r)
+
+    if not encontrados:
+        print("ℹ️ No se encontraron registros.")
+        return
+
+    for registro in encontrados:
+        print(
+            f"Torre: {registro['torre']}, Piso: {registro['piso']}, Departamento: {registro['numero']}, "
+            f"Metros cubiertos: {registro['metros_cubiertos']}, Libre: {registro['libre']}"
+        )
+
+def listar_cocheras(conn):
+    print("---------------------------------------------------------------------")
+    print("                      Listar cocheras                               ")
+    print("                 Elija opción para filtrar la consulta              ")
+    print("---------------------------------------------------------------------")
+    print(" 1 - Consultar por torre")
+    print(" 2 - Consultar por torre y piso")
+    print(" 3 - Consultar por torre, piso y departamento")
+    print("---------------------------------------------------------------------")
+    opcion = input("Ingrese una opción: ").strip()
+
+    if opcion == "1":
+        torre = solicitarTorre()
+        registros = conn.execute(
+            """
+            SELECT * FROM cocheras
+            WHERE torre = ?
+            ORDER BY piso, numero
+            """,
+            (torre,),
+        ).fetchall()
+    elif opcion == "2":
+        torre = solicitarTorre()
+        piso = pedirNumero("Ingrese el piso: ")
+        registros = conn.execute(
+            """
+            SELECT * FROM cocheras
+            WHERE torre = ? AND piso = ?
+            ORDER BY numero
+            """,
+            (torre, piso),
+        ).fetchall()
+    elif opcion == "3":
+        torre = solicitarTorre()
+        piso = pedirNumero("Ingrese el piso: ")
+        numero = pedirNumero("Ingrese el número de departamento: ")
+        registro = obtener_cochera(conn, torre, piso, numero)
+        registros = [registro] if registro else []
+    else:
+        print("❌ Opción inválida.")
+        return
+
+    if not registros:
+        print("ℹ️ No se encontraron registros.")
+        return
+
+    for registro in registros:
+        frase = (
+            f"Torre: {registro['torre']}, Piso: {registro['piso']}, Departamento: {registro['numero']}, "
+            f"Metros cubiertos: {registro['metros_cubiertos']}, Libre: {registro['libre']}"
+        )
+        print(frase)
+        guardar_en_listado(frase)
+    print("ℹ️ La información se ha guardado en listado.txt.")
+
+def menu_cocheras(conn):
+    while True:
+        print("------------------------------------------------------------")
+        print("                     Menú de cocheras                       ")
+        print("------------------------------------------------------------")
+        print(" 1 - ➕ Cargar cochera")
+        print(" 2 - ✏️ Modificar cochera")
+        print(" 3 - 🔍 Consultar cochera")
+        print(" 4 - 📋 Listar cocheras")
+        print(" 0 - ⛔ Volver")
+        print("------------------------------------------------------------")
+        opcion = input("Ingrese una opción: ").strip()
+
+        if opcion == "1":
+            cargar_cochera(conn)
+        elif opcion == "2":
+            modificar_cochera(conn)
+        elif opcion == "3":
+            consultar_cochera(conn)
+        elif opcion == "4":
+            listar_cocheras(conn)
+        elif opcion == "0":
+            break
+        else:
+            print("❌ Opción inválida. Intente de nuevo.")
+
+
+
+#Liquidacion
+def calcular_liquidacion(conn):
+    departamentos = conn.execute("SELECT * FROM departamentos").fetchall()
+    propietarios = conn.execute("SELECT * FROM propietarios").fetchall()
+    cocheras = conn.execute("SELECT * FROM cocheras").fetchall()
+
+    if not departamentos:
+        print("ℹ️ No hay departamentos para liquidar.")
+        return
+
+    cantidad_por_torre = {"A": 0, "B": 0, "C": 0}
+    for depa in departamentos:
+        cantidad_por_torre[depa["torre"]] += 1
+
+    seguridad_torre = {}
+    seguridad_cochera = {}
+    for torre, cantidad in cantidad_por_torre.items():
+        if cantidad == 0:
+            seguridad_torre[torre] = 0
+            seguridad_cochera[torre] = 0
+        else:
+            valor = 150000 / cantidad
+            seguridad_torre[torre] = valor
+            seguridad_cochera[torre] = valor / 2
+
+    paga_doble = {"A": 0, "B": 0, "C": 0}
+    for depa in departamentos:
+        if depa["metros_cubiertos"] >= 100:
+            paga_doble[depa["torre"]] += seguridad_torre[depa["torre"]] * 2
+
+    moradores_sum = 0
+    for propietario in propietarios:
+        if propietario["sum"] == "s":
+            moradores_sum += 1
+    if moradores_sum == 0:
+        moradores_sum = 1
+    costo_sum = 80000 / moradores_sum
+
+    indice_propietarios = {}
+    for propietario in propietarios:
+        clave = (propietario["torre"], propietario["piso"], propietario["numero"])
+        indice_propietarios[clave] = propietario
+
+    print("\n--- Liquidación por Torre ---")
+    for torre in ("A", "B", "C"):
+        multiplicador = 2 if torre == "C" else 1
+        print(f"Torre {torre} paga por seguridad:")
+        print(f" - Por departamento: {int(seguridad_torre[torre] * multiplicador)}")
+        print(f" - Por cochera: {int(seguridad_cochera[torre] * multiplicador)}")
+        print(f"Departamentos mayores a 100m2 pagan el doble en Torre {torre}: {int(paga_doble[torre])}")
+    print()
+
+    print("--- Liquidación por Departamento ---")
+    total_departamentos = 0
+    for depa in departamentos:
+        clave = (depa["torre"], depa["piso"], depa["numero"])
+        propietario = indice_propietarios.get(clave)
+
+        agua = depa["agua"] * 1000
+        gas = depa["gas"] * 5000
+        luz = depa["luz"] * 15000
+        impuesto = depa["metros_cubiertos"] * 400
+        dias_sum = 0
+        uso_sum = 0
+
+        if propietario:
+            dias_sum = propietario["dias_sum"] * 40000
+            if propietario["sum"] == "s":
+                uso_sum = costo_sum
+
+        if depa["torre"] == "C":
+            uso_sum *= 2
+
+        luz_comun = seguridad_torre[depa["torre"]]
+        if depa["torre"] == "C":
+            luz_comun *= 2
+
+        total = agua + gas + luz + impuesto + uso_sum + dias_sum + luz_comun
+        total_departamentos += total
+
+        print(f"Depto {depa['torre']} - {depa['piso']} - {depa['numero']}")
+        print(f"  Agua: {int(agua)}")
+        print(f"  Gas: {int(gas)}")
+        print(f"  Luz: {int(luz)}")
+        print(f"  Impuesto especial: {int(impuesto)}")
+        print(f"  SUM: {int(uso_sum)}")
+        print(f"  Días de SUM: {int(dias_sum)}")
+        print(f"  Luz común: {int(luz_comun)}")
+        print(f"  Total a pagar: {int(total)}\n")
+
+    print("--- Liquidación por Cochera ---")
+    total_cocheras = 0
+    for cochera in cocheras:
+        impuesto = cochera["metros_cubiertos"] * 200
+        seguridad = seguridad_cochera[cochera["torre"]]
+        if cochera["torre"] == "C":
+            seguridad *= 2
+        total = impuesto + seguridad
+        total_cocheras += total
+
+        print(f"Cochera {cochera['torre']} - {cochera['piso']} - {cochera['numero']}")
+        print(f"  Impuesto especial: {int(impuesto)}")
+        print(f"  Seguridad: {int(seguridad)}")
+        print(f"  Total a pagar: {int(total)}\n")
+
+    print("--- Resumen Final ---")
+    print(f"Total departamentos: {int(total_departamentos)}")
+    print(f"Total cocheras: {int(total_cocheras)}")
+    print(f"Total general: {int(total_departamentos + total_cocheras)}")
+
+
+
+#Menu principal
+def menu_principal(conn):
+    while True:
+        print("-----------------------------------------------------------------------")
+        print("                 Menu principal de departamento                       ")
+        print("-----------------------------------------------------------------------")
+        print(" 1 - 🏠 Departamentos")
+        print(" 2 - 👤 Propietarios")
+        print(" 3 - 🚗 Cocheras")
+        print(" 4 - 💰 Liquidación")
+        print(" 0 - ⛔ Salir")
+        print("-----------------------------------------------------------------------")
+        opcion = input("Ingrese una opción: ").strip()
+        if opcion == "1":
+            menu_departamentos(conn)
+        elif opcion == "2":
+            menu_propietarios(conn)
+        elif opcion == "3":
+            menu_cocheras(conn)
+        elif opcion == "4":
+            calcular_liquidacion(conn)
+        elif opcion == "0":
+            print("Saliendo del programa.")
+            break
+        else:
+            print("❌ Opción inválida. Intente de nuevo.")
+
+
+
+#Funcion principal
+def main():
+    conn = obtener_conexion() #Obtiene la conexion y la guarda en la variable conn
+    try:
+        menu_principal(conn) #Comienza el programita si no hay ningun error
+    finally: #Se ejecuta si o si al terminar el bloque try o si da error
+        conn.close()
+
+
+main()
